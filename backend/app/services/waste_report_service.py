@@ -31,7 +31,7 @@ class WasteReportService:
             "category_id": cat_id,
             "estimated_weight_kg": data.estimated_weight_kg,
             "severity": "MEDIUM",
-            "status": WasteReportState.SUBMITTED,
+            "status": WasteReportState.SUBMITTED.value,
             "created_at": now,
             "updated_at": now
         }
@@ -40,7 +40,7 @@ class WasteReportService:
         if not response.data:
             raise HTTPException(status_code=500, detail="Failed to create waste report in database")
             
-        return WasteReportResponse(**response.data[0])
+        return cls._map_to_response(response.data[0])
 
     @staticmethod
     def get_report_by_id(report_id: str) -> Optional[WasteReportResponse]:
@@ -48,7 +48,7 @@ class WasteReportService:
         response = supabase.table("waste_reports").select("*").eq("id", report_id).execute()
         if not response.data:
             return None
-        return WasteReportResponse(**response.data[0])
+        return cls._map_to_response(response.data[0])
 
     @staticmethod
     def get_reports_for_user(user: UserResponse, skip: int = 0, limit: int = 50) -> List[WasteReportResponse]:
@@ -61,7 +61,7 @@ class WasteReportService:
             query = query.eq("reporter_id", user.id)
             
         response = query.execute()
-        return [WasteReportResponse(**r) for r in response.data]
+        return [cls._map_to_response(r) for r in response.data]
 
     @staticmethod
     def update_report_state(report_id: str, new_state: WasteReportState, admin_notes: Optional[str] = None) -> WasteReportResponse:
@@ -71,7 +71,7 @@ class WasteReportService:
             raise HTTPException(status_code=404, detail="Report not found")
             
         update_data = {
-            "status": new_state,
+            "status": new_state.value,
             "updated_at": datetime.utcnow().isoformat()
         }
         if admin_notes is not None:
@@ -81,4 +81,20 @@ class WasteReportService:
         if not update_res.data:
             raise HTTPException(status_code=500, detail="Failed to update report state")
             
-        return WasteReportResponse(**update_res.data[0])
+        return cls._map_to_response(update_res.data[0])
+
+    @staticmethod
+    def _map_to_response(row: dict):
+        return {
+            "id": str(row.get("id", "")),
+            "reporter_id": row.get("reporter_id", ""),
+            "state": row.get("status", "SUBMITTED"),
+            "category": "PLASTIC",
+            "estimated_weight_kg": row.get("estimated_weight_kg", 0.0),
+            "location": {"address": "Saved Location", "coordinates": [0,0]},
+            "description": row.get("description", ""),
+            "image_url": None,
+            "admin_notes": None,
+            "created_at": row.get("created_at"),
+            "updated_at": row.get("updated_at")
+        }

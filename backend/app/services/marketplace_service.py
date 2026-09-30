@@ -21,7 +21,7 @@ class MarketplaceService:
             "quantity_kg": getattr(data, 'quantity_kg', 0),
             "asking_price": getattr(data, 'asking_price', 0),
             "location": f"POINT({data.location.coordinates[0]} {data.location.coordinates[1]})" if hasattr(data, 'location') and data.location and data.location.coordinates else "POINT(0 0)",
-            "status": ListingStatus.AVAILABLE,
+            "status": ListingStatus.AVAILABLE.value,
             "created_at": now,
             "updated_at": now
         }
@@ -30,7 +30,7 @@ class MarketplaceService:
         if not response.data:
             raise HTTPException(status_code=500, detail="Failed to create listing")
             
-        return MarketplaceListingResponse(**response.data[0])
+        return cls._map_to_response(response.data[0])
 
     @staticmethod
     def get_listings(
@@ -50,7 +50,7 @@ class MarketplaceService:
         response = supabase.table("marketplace_listings").select("*").eq("id", listing_id).execute()
         if not response.data:
             return None
-        return MarketplaceListingResponse(**response.data[0])
+        return cls._map_to_response(response.data[0])
 
     @staticmethod
     def create_offer(listing_id: str, buyer_id: str, data: MarketplaceOfferCreate) -> MarketplaceOfferResponse:
@@ -120,3 +120,17 @@ class MarketplaceService:
             environmental_impact={"co2_saved_kg": listing["quantity_kg"] * 1.5},
             generated_at=datetime.utcnow()
         )
+
+    @staticmethod
+    def _map_to_response(row: dict):
+        return {
+            "id": str(row.get("id", "")),
+            "seller_id": row.get("seller_id", ""),
+            "category_id": row.get("category_id", 1),
+            "quantity_kg": row.get("quantity_kg", 0.0),
+            "asking_price": row.get("asking_price", 0.0),
+            "location": {"address": "Saved Location", "coordinates": [0,0]},
+            "status": row.get("status", "AVAILABLE"),
+            "created_at": row.get("created_at"),
+            "updated_at": row.get("updated_at")
+        }

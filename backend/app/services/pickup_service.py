@@ -25,7 +25,7 @@ class PickupService:
             "category_id": cat_id,
             "scheduled_window_start": getattr(data.preferred_window, 'start_time', now) if data.preferred_window else now,
             "scheduled_window_end": getattr(data.preferred_window, 'end_time', now) if data.preferred_window else now,
-            "status": PickupState.PENDING,
+            "status": PickupState.PENDING.value,
             "collector_id": None,
             "actual_weight_kg": None,
             "created_at": now,
@@ -36,7 +36,7 @@ class PickupService:
         if not response.data:
             raise HTTPException(status_code=500, detail="Failed to create pickup in database")
             
-        return PickupResponse(**response.data[0])
+        return cls._map_to_response(response.data[0])
 
     @staticmethod
     def get_pickups(user: UserResponse, skip: int = 0, limit: int = 50) -> List[PickupResponse]:
@@ -51,19 +51,19 @@ class PickupService:
             query = query.eq("collector_id", user.id)
             
         response = query.execute()
-        return [PickupResponse(**p) for p in response.data]
+        return [cls._map_to_response(p) for p in response.data]
 
     @staticmethod
     def get_pickup_by_id(pickup_id: str) -> Optional[PickupResponse]:
         response = supabase.table("pickup_requests").select("*").eq("id", pickup_id).execute()
         if not response.data:
             return None
-        return PickupResponse(**response.data[0])
+        return cls._map_to_response(response.data[0])
 
     @staticmethod
     def update_pickup_state(pickup_id: str, new_state: PickupState, current_user: UserResponse) -> PickupResponse:
         update_data = {
-            "status": new_state,
+            "status": new_state.value,
             "updated_at": datetime.utcnow().isoformat()
         }
         
@@ -71,4 +71,19 @@ class PickupService:
         if not response.data:
             raise HTTPException(status_code=404, detail="Pickup not found or update failed")
             
-        return PickupResponse(**response.data[0])
+        return cls._map_to_response(response.data[0])
+
+    @staticmethod
+    def _map_to_response(row: dict):
+        return {
+            "id": str(row.get("id", "")),
+            "user_id": row.get("requester_id", ""),
+            "state": row.get("status", "PENDING"),
+            "category": "PLASTIC", 
+            "estimated_weight_kg": row.get("estimated_weight_kg", 0.0),
+            "location": {"address": "Saved Location", "coordinates": [0,0]},
+            "created_at": row.get("created_at"),
+            "updated_at": row.get("updated_at"),
+            "preferred_window": None,
+            "notes": None
+        }
