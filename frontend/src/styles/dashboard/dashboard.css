@@ -1432,4 +1432,4 @@
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
   }
-}
+}.mobile-dashboard { max-width: 500px; margin: 0 auto; padding: 20px; font-family: 'Space Grotesk', sans-serif; } .mobile-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; } .mobile-grid { display: grid; gap: 15px; } .mobile-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #eaeaea; cursor: pointer; transition: transform 0.2s; } .mobile-card:hover { transform: translateY(-3px); border-color: var(--land-green); } .mobile-card h3 { margin: 0 0 8px 0; font-size: 18px; color: #10231a; } .mobile-card p { margin: 0; font-size: 14px; color: #718078; }

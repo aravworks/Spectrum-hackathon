@@ -83,6 +83,43 @@ const gaps = [
   },
 ];
 
+
+function ConsumerMobileDashboard({ logout, user, navigate }) {
+  return (
+    <div className="mobile-dashboard">
+      <div className="mobile-header">
+        <h2>Welcome, {user.name || user.full_name || "User"}</h2>
+        <button onClick={logout} style={{padding: '8px 16px', background: '#f5f5f5', border: 'none', borderRadius: '8px', cursor: 'pointer'}}>Logout</button>
+      </div>
+      
+      <p style={{marginBottom: '20px', color: '#718078'}}>Your central hub for waste intelligence and tracking.</p>
+
+      <div className="mobile-grid">
+         <div className="mobile-card" onClick={() => navigate('/pickup-request')}>
+           <h3>🚚 Request Pickup</h3>
+           <p>Schedule a new waste pickup at your location</p>
+         </div>
+         <div className="mobile-card" onClick={() => navigate('/complaint-tracking')}>
+           <h3>🕒 History & Tracking</h3>
+           <p>View past pickups and simulated map paths</p>
+         </div>
+         <div className="mobile-card" onClick={() => navigate('/ai-chatbot')}>
+           <h3>🤖 AI Assistant</h3>
+           <p>Ask questions about recycling and disposal</p>
+         </div>
+         <div className="mobile-card" onClick={() => navigate('/waste-marketplace')}>
+           <h3>♻️ Marketplace</h3>
+           <p>Buy or sell reusable waste materials</p>
+         </div>
+         <div className="mobile-card" onClick={() => navigate('/report-waste')}>
+           <h3>⚠️ Report Issue</h3>
+           <p>Report illegal dumping or waste hazards</p>
+         </div>
+      </div>
+    </div>
+  );
+}
+
 function DashboardPage() {
   const navigate = useNavigate();
 
@@ -116,6 +153,11 @@ function DashboardPage() {
     localStorage.removeItem("ecoverseUser");
     navigate("/login");
   };
+
+
+  if (user.role && (user.role.toLowerCase() === 'consumer' || user.role.toLowerCase() === 'user')) {
+    return <ConsumerMobileDashboard logout={logout} user={user} navigate={navigate} />;
+  }
 
   return (
     <div className="page dashboard-page">

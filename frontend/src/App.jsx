@@ -34,7 +34,18 @@ import RewardsPage from "./pages/RewardsPage";
 import AIChatbotPage from "./pages/AIChatbotPage";
 
 
+
+function ProtectedRoute({ children }) {
+  const token = localStorage.getItem("ecoverseToken");
+  const user = localStorage.getItem("ecoverseUser");
+  if (!token || !user) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+}
+
 function App() {
+
   return (
     <BrowserRouter>
       <Routes>
@@ -45,7 +56,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Main Application */}
-        <Route element={<MainLayout />}>
+        <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
 
           {/* Dashboard */}
           <Route

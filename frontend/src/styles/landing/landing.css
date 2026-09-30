@@ -968,6 +968,7 @@
 .pillar h3 {
   margin: 26px 0 10px;
 
+  color: #10231a;
   font-family: "Space Grotesk", sans-serif;
   font-size: 20px;
   letter-spacing: -.02em;
@@ -976,8 +977,8 @@
 .pillar p {
   margin: 0;
 
-  color: #718078;
-  font-size: 12px;
+  color: #2b3b33;
+  font-size: 13px;
   line-height: 1.65;
 }
 
