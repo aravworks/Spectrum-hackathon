@@ -17,3 +17,7 @@ api_router.include_router(pickups.router, prefix="/pickups", tags=["pickups"])
 # Include the Dispatch (ML Routing) Router
 from app.api.v1.endpoints import dispatch
 api_router.include_router(dispatch.router, prefix="/dispatch", tags=["dispatch"])
+
+# Include the Awareness Articles (Blogs) Router
+from app.api.v1.endpoints import articles
+api_router.include_router(articles.router, prefix="/articles", tags=["articles"])
