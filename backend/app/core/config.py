@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     # Database Settings
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/waste"
     SUPABASE_URL: Optional[str] = None
+    SUPABASE_KEY: Optional[str] = None  # Anon or Service Role key
     
     # AI Config
     OPENAI_API_KEY: Optional[str] = None
