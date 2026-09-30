@@ -23,28 +23,34 @@ def get_db() -> Generator:
 
 def get_current_user(
     token: str = Depends(reusable_oauth2),
-    # db: Session = Depends(get_db)  # Uncomment when DB is ready
 ) -> UserResponse:
     """
-    Dependency that decodes the JWT token and fetches the current user.
+    Dependency that decodes the JWT token and fetches the current user from Supabase.
     """
+    from app.core.db import supabase
+    
     try:
-        payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
+        # Securely validate the token with Supabase directly
+        res = supabase.auth.get_user(token)
+        if not res.user:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Could not validate credentials",
+            )
+            
+        user_metadata = res.user.user_metadata
+        return UserResponse(
+            id=res.user.id,
+            email=res.user.email,
+            full_name=user_metadata.get("full_name", ""),
+            role=UserRole(user_metadata.get("role", UserRole.CONSUMER.value)),
+            is_active=True
         )
-        token_data = TokenPayload(**payload)
-    except (JWTError, ValidationError):
+    except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Could not validate credentials",
+            detail=f"Could not validate credentials: {str(e)}",
         )
-    
-    # Fetch user using the mock service (pass db in future)
-    user = UserService.get_user_by_id(user_id=token_data.sub)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    return user
 
 def get_current_active_user(
     current_user: UserResponse = Depends(get_current_user),

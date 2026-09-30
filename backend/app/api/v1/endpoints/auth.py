@@ -1,6 +1,7 @@
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import BaseModel
 
 from app.core import security
 from app.core.config import settings
@@ -11,33 +12,41 @@ from app.api import deps
 
 router = APIRouter()
 
+class UserRegister(BaseModel):
+    email: str
+    password: str
+    full_name: str
+    role: UserRole = UserRole.CONSUMER
+
+@router.post("/register", response_model=UserResponse)
+def register_user(data: UserRegister):
+    """Register a new user directly into Supabase Auth."""
+    return UserService.create_user(
+        email=data.email, 
+        password=data.password, 
+        full_name=data.full_name, 
+        role=data.role
+    )
+
 @router.post("/login", response_model=Token)
 def login_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
-    # db: Session = Depends(deps.get_db) # Teammate to uncomment
 ) -> Token:
     """
-    OAuth2 compatible token login, get an access token for future requests.
+    Login using Supabase Auth. Returns the actual Supabase JWT access token.
     """
-    user = UserService.authenticate(
+    auth_data = UserService.authenticate(
         email=form_data.username, password=form_data.password
     )
-    if not user:
+    if not auth_data:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect email or password",
         )
-    elif not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Inactive user account",
-        )
     
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    # We return the Supabase JWT so the frontend can use it directly!
     return Token(
-        access_token=security.create_access_token(
-            user.id, expires_delta=access_token_expires
-        ),
+        access_token=auth_data["session"].access_token,
         token_type="bearer",
     )
 

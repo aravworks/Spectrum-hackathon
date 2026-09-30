@@ -1,70 +1,74 @@
 from typing import Optional
+from fastapi import HTTPException
 from app.schemas.user import UserResponse, UserRole
-from app.core.security import verify_password
-
-# -------------------------------------------------------------------
-# MOCK DATABASE FOR DEVELOPMENT
-# -------------------------------------------------------------------
-# TODO (Teammate): Replace this mock database with real SQLAlchemy queries
-# using the models you are building. The interface should stay roughly the same.
-
-MOCK_USERS = {
-    "admin@ecoverse.com": {
-        "id": "usr-1",
-        "email": "admin@ecoverse.com",
-        "full_name": "System Admin",
-        "role": UserRole.SYS_ADMIN,
-        "is_active": True,
-        # Password is 'admin123'
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW"
-    },
-    "collector@ecoverse.com": {
-        "id": "usr-2",
-        "email": "collector@ecoverse.com",
-        "full_name": "John Collector",
-        "role": UserRole.COLLECTOR,
-        "is_active": True,
-        # Password is 'collector123'
-        "hashed_password": "$2b$12$G1B5l6XqP3P.nI5T6N9iZONaT7P/P/1M9G4wPzK/yLh8P9.0R6qjG" 
-    },
-    "consumer@ecoverse.com": {
-        "id": "usr-3",
-        "email": "consumer@ecoverse.com",
-        "full_name": "Jane Consumer",
-        "role": UserRole.CONSUMER,
-        "is_active": True,
-        # Password is 'consumer123'
-        "hashed_password": "$2b$12$6qH/1G7Tq1O7z3rP1M5n5.O5m6q4tL5H7K8l9M0w2N3v5b7c9x1B2"
-    }
-}
+from app.core.db import supabase
 
 class UserService:
     """
-    Abstracts database operations for User accounts.
-    Currently uses an in-memory dictionary.
+    Abstracts database operations for User accounts using Supabase Auth.
     """
     
     @staticmethod
-    def get_user_by_email(email: str) -> Optional[dict]:
-        """Fetch a user record by email."""
-        # TODO: return db.query(User).filter(User.email == email).first()
-        return MOCK_USERS.get(email)
+    def create_user(email: str, password: str, full_name: str, role: UserRole) -> UserResponse:
+        """Register a new user via Supabase Auth."""
+        res = supabase.auth.sign_up({
+            "email": email,
+            "password": password,
+            "options": {
+                "data": {
+                    "full_name": full_name,
+                    "role": role.value
+                }
+            }
+        })
+        if not res.user:
+            raise HTTPException(status_code=400, detail="Failed to register user")
+            
+        user_metadata = res.user.user_metadata
+        return UserResponse(
+            id=res.user.id,
+            email=res.user.email,
+            full_name=user_metadata.get("full_name", ""),
+            role=UserRole(user_metadata.get("role", UserRole.CONSUMER.value)),
+            is_active=True
+        )
     
     @staticmethod
     def get_user_by_id(user_id: str) -> Optional[UserResponse]:
-        """Fetch a user record by ID and return a Pydantic schema."""
-        # TODO: return db.query(User).filter(User.id == user_id).first()
-        for user in MOCK_USERS.values():
-            if user["id"] == user_id:
-                return UserResponse(**user)
-        return None
+        """Fetch a user record from the custom users table or auth endpoint (Requires Admin or RLS logic).
+        Since Supabase admin API requires service_role, we can decode JWT instead in deps.py.
+        For now, we return a shell or fetch from a 'profiles' table if it exists."""
+        # Using Supabase auth.admin.get_user_by_id requires service_role key.
+        # Assuming we have service role initialized in db.py:
+        try:
+            res = supabase.auth.admin.get_user_by_id(user_id)
+            user_metadata = res.user.user_metadata
+            return UserResponse(
+                id=res.user.id,
+                email=res.user.email,
+                full_name=user_metadata.get("full_name", ""),
+                role=UserRole(user_metadata.get("role", UserRole.CONSUMER.value)),
+                is_active=True
+            )
+        except Exception:
+            return None
 
     @staticmethod
-    def authenticate(email: str, password: str) -> Optional[UserResponse]:
-        """Verify user credentials and return the user if valid."""
-        user = UserService.get_user_by_email(email)
-        if not user:
+    def authenticate(email: str, password: str) -> Optional[dict]:
+        """Verify user credentials with Supabase Auth."""
+        try:
+            res = supabase.auth.sign_in_with_password({"email": email, "password": password})
+            if not res.user:
+                return None
+                
+            user_metadata = res.user.user_metadata
+            user = UserResponse(
+                id=res.user.id,
+                email=res.user.email,
+                full_name=user_metadata.get("full_name", ""),
+                role=UserRole(user_metadata.get("role", UserRole.CONSUMER.value)),
+                is_active=True
+            )
+            return {"user": user, "session": res.session}
+        except Exception:
             return None
-        if not verify_password(password, user["hashed_password"]):
-            return None
-        return UserResponse(**user)
