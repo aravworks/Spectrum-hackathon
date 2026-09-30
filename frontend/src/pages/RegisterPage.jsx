@@ -22,6 +22,7 @@ function RegisterPage() {
     setMessage("");
   };
 
+  
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -36,6 +37,16 @@ function RegisterPage() {
     setMessage("");
 
     try {
+      // Map frontend roles to backend enum
+      const roleMap = {
+        "Consumer": "CONSUMER",
+        "Company": "RECYCLER",
+        "Researcher": "RESEARCHER",
+        "Authority": "CITY_ADMIN"
+      };
+      
+      const backendRole = roleMap[form.role] || "CONSUMER";
+
       // 1. Register the user
       const registerRes = await fetch("https://spectrum-hackathon.onrender.com/api/v1/auth/register", {
         method: "POST",
@@ -44,12 +55,16 @@ function RegisterPage() {
           email: form.email.toLowerCase(),
           password: form.password,
           full_name: form.name,
-          role: form.role
+          role: backendRole
         }),
       });
 
       if (!registerRes.ok) {
         const errorData = await registerRes.json();
+        // Handle Pydantic 422 validation errors which come back as arrays
+        if (Array.isArray(errorData.detail)) {
+            throw new Error(errorData.detail[0].msg || "Invalid input data.");
+        }
         throw new Error(errorData.detail || "Failed to register.");
       }
 
@@ -73,17 +88,19 @@ function RegisterPage() {
       const account = {
         name: form.name,
         email: form.email.toLowerCase(),
-        role: form.role.charAt(0).toUpperCase() + form.role.slice(1),
+        role: form.role,
       };
 
       localStorage.setItem("ecoverseUser", JSON.stringify(account));
       navigate("/dashboard");
     } catch (err) {
-      setMessage(err.message);
+      // Prevent [object Object] by converting explicitly to string
+      setMessage(typeof err.message === 'string' ? err.message : JSON.stringify(err.message));
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="login-page">
