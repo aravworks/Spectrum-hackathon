@@ -18,16 +18,43 @@ function ReportWasteIssuePage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    setSubmitted(true);
+    try {
+      const token = localStorage.getItem("ecoverseToken");
+      const res = await fetch("https://spectrum-hackathon.onrender.com/api/v1/reports", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          location: { address: form.location, coordinates: [0, 0] },
+          category: form.category.toUpperCase(),
+          description: form.description,
+          image_url: null,
+          estimated_weight_kg: parseFloat(form.estimatedQuantity || 0)
+        })
+      });
 
-    console.log("Waste issue report:", {
-      ...form,
-      status: "USER REPORT",
-    });
+      if (!res.ok) throw new Error("Failed to submit waste report");
+      const data = await res.json();
+      
+      console.log("Waste issue report:", data);
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to submit report: " + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   if (submitted) {
     return (

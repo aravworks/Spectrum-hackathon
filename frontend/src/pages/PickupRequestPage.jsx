@@ -20,24 +20,51 @@ function PickupRequestPage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const requestId = `PR-2026-${Math.floor(
-      1000 + Math.random() * 9000
-    )}`;
+    try {
+      const token = localStorage.getItem("ecoverseToken");
+      const res = await fetch("https://spectrum-hackathon.onrender.com/api/v1/pickups", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          location: { address: form.address, coordinates: [0, 0] },
+          estimated_weight_kg: parseFloat(form.estimatedWeight),
+          category: form.wasteType.toUpperCase(),
+          preferred_window: { start_time: `${form.pickupDate}T09:00:00Z`, end_time: `${form.pickupDate}T17:00:00Z` },
+          notes: form.instructions
+        })
+      });
 
-    localStorage.setItem(
-      "ecoversePickupRequest",
-      JSON.stringify({
-        requestId,
-        ...form,
-        status: "REQUESTED",
-      })
-    );
+      if (!res.ok) throw new Error("Failed to request pickup");
+      const data = await res.json();
 
-    setSubmitted(true);
+      localStorage.setItem(
+        "ecoversePickupRequest",
+        JSON.stringify({
+          requestId: data.id,
+          ...form,
+          status: "REQUESTED",
+        })
+      );
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to create pickup request: " + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   if (submitted) {
     const request = JSON.parse(

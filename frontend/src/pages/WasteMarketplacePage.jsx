@@ -8,159 +8,51 @@ function WasteMarketplacePage() {
   const [listingMode, setListingMode] = useState("ALL");
   const [selectedListing, setSelectedListing] = useState(null);
 
-  const listings = [
-    {
-      id: "MAT-2026-001",
-      title: "Clean Cotton Textile Waste",
-      category: "TEXTILE",
-      material: "Cotton",
-      quantity: "85 kg",
-      condition: "Clean / Sorted",
-      price: "₹18/kg",
-      mode: "SALE",
-      location: "Kanpur, Uttar Pradesh",
-      seller: "Aarav Textiles",
-      sellerType: "Business",
-      verified: true,
-      pickup: true,
-      description:
-        "Sorted cotton cutting waste suitable for textile recovery, reuse or recycling.",
-      listed: "2 hours ago",
-    },
+  
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    {
-      id: "MAT-2026-002",
-      title: "PET Plastic Bottles",
-      category: "PLASTIC",
-      material: "PET",
-      quantity: "120 kg",
-      condition: "Compressed",
-      price: "₹32/kg",
-      mode: "SALE",
-      location: "Lucknow, Uttar Pradesh",
-      seller: "GreenCycle Collection",
-      sellerType: "Recycler",
-      verified: true,
-      pickup: true,
-      description:
-        "Sorted and compressed PET bottles collected from commercial sources.",
-      listed: "5 hours ago",
-    },
+  import { useEffect } from "react";
+  
+  useEffect(() => {
+    async function fetchListings() {
+      try {
+        const token = localStorage.getItem("ecoverseToken");
+        const res = await fetch("https://spectrum-hackathon.onrender.com/api/v1/marketplace/listings", {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+        if (!res.ok) throw new Error("Failed to fetch listings");
+        const data = await res.json();
+        
+        const formattedListings = data.map(item => ({
+          id: item.id,
+          title: item.title || `${item.category} Waste`,
+          category: item.category,
+          material: item.category,
+          quantity: `${item.quantity_kg} kg`,
+          condition: "Sorted",
+          price: `₹${item.asking_price}/kg`,
+          mode: "SALE",
+          location: item.location ? `${item.location.address || item.location.coordinates}` : "Unknown Location",
+          seller: item.seller_id,
+          sellerType: "User",
+          verified: true,
+          pickup: true,
+          description: item.description || "No description provided.",
+          listed: new Date(item.created_at).toLocaleDateString()
+        }));
+        setListings(formattedListings);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchListings();
+  }, []);
 
-    {
-      id: "MAT-2026-003",
-      title: "Old Desktop Computers",
-      category: "E-WASTE",
-      material: "Electronics",
-      quantity: "14 units",
-      condition: "Used / Working",
-      price: "₹1,500/unit",
-      mode: "SALE",
-      location: "Noida, Uttar Pradesh",
-      seller: "Tech Renewal Hub",
-      sellerType: "Business",
-      verified: true,
-      pickup: false,
-      description:
-        "Used desktop computers available for reuse, refurbishment or responsible recovery.",
-      listed: "Today",
-    },
-
-    {
-      id: "MAT-2026-004",
-      title: "Corrugated Cardboard",
-      category: "PAPER",
-      material: "Cardboard",
-      quantity: "210 kg",
-      condition: "Dry / Flattened",
-      price: "FREE",
-      mode: "FREE",
-      location: "Kanpur, Uttar Pradesh",
-      seller: "Local Warehouse",
-      sellerType: "Business",
-      verified: false,
-      pickup: true,
-      description:
-        "Clean flattened cardboard from packaging operations. Available for collection.",
-      listed: "Today",
-    },
-
-    {
-      id: "MAT-2026-005",
-      title: "Aluminium Scrap",
-      category: "METAL",
-      material: "Aluminium",
-      quantity: "65 kg",
-      condition: "Sorted",
-      price: "₹145/kg",
-      mode: "SALE",
-      location: "Delhi, India",
-      seller: "Metro Scrap Works",
-      sellerType: "Recycler",
-      verified: true,
-      pickup: false,
-      description:
-        "Sorted aluminium scrap suitable for material recovery.",
-      listed: "Yesterday",
-    },
-
-    {
-      id: "MAT-2026-006",
-      title: "Used Wooden Furniture",
-      category: "FURNITURE",
-      material: "Wood",
-      quantity: "6 units",
-      condition: "Repairable",
-      price: "₹500/unit",
-      mode: "SALE",
-      location: "Kanpur, Uttar Pradesh",
-      seller: "Community Listing",
-      sellerType: "Individual",
-      verified: false,
-      pickup: true,
-      description:
-        "Used tables and storage units. Suitable for repair, reuse or refurbishment.",
-      listed: "Yesterday",
-    },
-
-    {
-      id: "MAT-2026-007",
-      title: "Mixed Textile Offcuts",
-      category: "TEXTILE",
-      material: "Cotton / Polyester",
-      quantity: "150 kg",
-      condition: "Mixed / Sorted",
-      price: "₹10/kg",
-      mode: "SALE",
-      location: "Jaipur, Rajasthan",
-      seller: "Fabric Recovery Unit",
-      sellerType: "Business",
-      verified: true,
-      pickup: true,
-      description:
-        "Post-production textile offcuts separated by available material streams.",
-      listed: "2 days ago",
-    },
-
-    {
-      id: "MAT-2026-008",
-      title: "Glass Bottles",
-      category: "GLASS",
-      material: "Glass",
-      quantity: "300 kg",
-      condition: "Clean / Sorted",
-      price: "₹7/kg",
-      mode: "SALE",
-      location: "Agra, Uttar Pradesh",
-      seller: "Bottle Recovery Centre",
-      sellerType: "Recycler",
-      verified: true,
-      pickup: true,
-      description:
-        "Sorted reusable and recyclable glass bottles.",
-      listed: "2 days ago",
-    },
-  ];
 
   const categories = [
     "ALL",
