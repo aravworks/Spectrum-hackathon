@@ -33,3 +33,7 @@ api_router.include_router(gis.router, prefix="/gis", tags=["gis"])
 # Include the Marketplace & Traceability Router
 from app.api.v1.endpoints import marketplace
 api_router.include_router(marketplace.router, prefix="/marketplace", tags=["marketplace"])
+
+# Include the AI Chatbot Router
+from app.api.v1.endpoints import chatbot
+api_router.include_router(chatbot.router, prefix="/chatbot", tags=["chatbot"])
