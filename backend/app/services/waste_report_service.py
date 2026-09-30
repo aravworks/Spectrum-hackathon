@@ -21,15 +21,17 @@ class WasteReportService:
         """Create a new waste report."""
         now = datetime.utcnow().isoformat()
         
+        cat_map = {"TEXTILE": 1, "PLASTIC": 2, "E-WASTE": 3, "PAPER": 4, "GLASS": 5, "METAL": 6}
+        cat_id = cat_map.get(data.category.upper(), 1) if data.category else 1
+        
         insert_data = {
             "reporter_id": user_id,
-            "location": data.location.model_dump(),
+            "location": f"POINT({data.location.coordinates[0]} {data.location.coordinates[1]})" if data.location and data.location.coordinates else "POINT(0 0)",
             "description": data.description,
-            "category": data.category,
-            "image_url": data.image_url,
+            "category_id": cat_id,
             "estimated_weight_kg": data.estimated_weight_kg,
-            "state": WasteReportState.SUBMITTED,
-            "admin_notes": None,
+            "severity": "MEDIUM",
+            "status": WasteReportState.SUBMITTED,
             "created_at": now,
             "updated_at": now
         }
@@ -69,7 +71,7 @@ class WasteReportService:
             raise HTTPException(status_code=404, detail="Report not found")
             
         update_data = {
-            "state": new_state,
+            "status": new_state,
             "updated_at": datetime.utcnow().isoformat()
         }
         if admin_notes is not None:

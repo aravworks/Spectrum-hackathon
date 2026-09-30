@@ -17,10 +17,10 @@ class MarketplaceService:
         now = datetime.utcnow().isoformat()
         insert_data = {
             "seller_id": seller_id,
-            "category_id": data.category_id,
-            "quantity_kg": data.quantity_kg,
-            "asking_price": data.asking_price,
-            "location": data.location.model_dump(),
+            "category_id": getattr(data, 'category_id', 1),
+            "quantity_kg": getattr(data, 'quantity_kg', 0),
+            "asking_price": getattr(data, 'asking_price', 0),
+            "location": f"POINT({data.location.coordinates[0]} {data.location.coordinates[1]})" if hasattr(data, 'location') and data.location and data.location.coordinates else "POINT(0 0)",
             "status": ListingStatus.AVAILABLE,
             "created_at": now,
             "updated_at": now
