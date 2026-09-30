@@ -22,24 +22,67 @@ function RegisterPage() {
     setMessage("");
   };
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (form.password.length < 6) {
       setMessage("Password must be at least 6 characters.");
       return;
     }
+    
+    setLoading(true);
+    setMessage("");
 
-    const account = {
-      name: form.name,
-      email: form.email.toLowerCase(),
-      password: form.password,
-      role: form.role,
-    };
+    try {
+      // 1. Register the user
+      const registerRes = await fetch("https://spectrum-hackathon.onrender.com/api/v1/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.email.toLowerCase(),
+          password: form.password,
+          full_name: form.name,
+          role: form.role
+        }),
+      });
 
-    localStorage.setItem("ecoverseUser", JSON.stringify(account));
+      if (!registerRes.ok) {
+        const errorData = await registerRes.json();
+        throw new Error(errorData.detail || "Failed to register.");
+      }
 
-    navigate("/dashboard");
+      // 2. Automatically log them in to get the JWT
+      const formData = new URLSearchParams();
+      formData.append("username", form.email.toLowerCase());
+      formData.append("password", form.password);
+
+      const loginRes = await fetch("https://spectrum-hackathon.onrender.com/api/v1/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData,
+      });
+
+      if (!loginRes.ok) throw new Error("Registered successfully, but failed to log in.");
+
+      const loginData = await loginRes.json();
+      localStorage.setItem("ecoverseToken", loginData.access_token);
+      
+      // We know their profile data
+      const account = {
+        name: form.name,
+        email: form.email.toLowerCase(),
+        role: form.role.charAt(0).toUpperCase() + form.role.slice(1),
+      };
+
+      localStorage.setItem("ecoverseUser", JSON.stringify(account));
+      navigate("/dashboard");
+    } catch (err) {
+      setMessage(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

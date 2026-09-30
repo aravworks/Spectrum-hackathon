@@ -35,31 +35,53 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-
     setError("");
+    setLoading(true);
 
-    const normalizedEmail =
-      email.trim().toLowerCase();
+    const normalizedEmail = email.trim().toLowerCase();
 
-    const user = Object.values(demoUsers).find(
-      (item) =>
-        item.email === normalizedEmail &&
-        item.password === password
-    );
+    try {
+      // 1. Call real login endpoint (which uses Supabase Auth via our backend)
+      const formData = new URLSearchParams();
+      formData.append("username", normalizedEmail);
+      formData.append("password", password);
 
-    if (!user) {
-      setError("Invalid email or password.");
-      return;
+      const response = await fetch("https://spectrum-hackathon.onrender.com/api/v1/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid email or password.");
+      }
+
+      const data = await response.json();
+      
+      // 2. Fetch user profile securely
+      const userRes = await fetch("https://spectrum-hackathon.onrender.com/api/v1/auth/test-token", {
+        headers: { "Authorization": `Bearer ${data.access_token}` }
+      });
+      
+      if (!userRes.ok) throw new Error("Failed to load user profile.");
+      
+      const userData = await userRes.json();
+
+      localStorage.setItem("ecoverseToken", data.access_token);
+      // Ensure the frontend still understands the role string
+      userData.role = userData.role.charAt(0).toUpperCase() + userData.role.slice(1);
+      localStorage.setItem("ecoverseUser", JSON.stringify(userData));
+
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message || "Failed to sign in. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    localStorage.setItem(
-      "ecoverseUser",
-      JSON.stringify(user)
-    );
-
-    navigate("/dashboard");
   };
 
   const fillDemo = (type) => {
