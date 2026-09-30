@@ -1,26 +1,27 @@
+import uuid
 from datetime import datetime
 from typing import List, Optional
 from fastapi import HTTPException
 
-from app.schemas.marketplace import ListingCreate, ListingResponse, ListingStatus, OfferCreate, OfferResponse, OfferStatus
-from app.schemas.user import UserResponse
+from app.schemas.marketplace import (
+    MarketplaceListingCreate, MarketplaceListingResponse, ListingStatus,
+    MarketplaceOfferCreate, MarketplaceOfferResponse, OfferStatus,
+    TraceabilityManifestResponse
+)
 from app.core.db import supabase
 
 class MarketplaceService:
 
     @staticmethod
-    def create_listing(seller_id: str, data: ListingCreate) -> ListingResponse:
+    def create_listing(seller_id: str, data: MarketplaceListingCreate) -> MarketplaceListingResponse:
         now = datetime.utcnow().isoformat()
         insert_data = {
             "seller_id": seller_id,
-            "title": data.title,
-            "description": data.description,
-            "category": data.category,
-            "weight_kg": data.weight_kg,
-            "purity_percentage": data.purity_percentage,
-            "asking_price_per_kg": data.asking_price_per_kg,
+            "category_id": data.category_id,
+            "quantity_kg": data.quantity_kg,
+            "asking_price": data.asking_price,
             "location": data.location.model_dump(),
-            "status": ListingStatus.ACTIVE,
+            "status": ListingStatus.AVAILABLE,
             "created_at": now,
             "updated_at": now
         }
@@ -29,30 +30,30 @@ class MarketplaceService:
         if not response.data:
             raise HTTPException(status_code=500, detail="Failed to create listing")
             
-        return ListingResponse(**response.data[0])
+        return MarketplaceListingResponse(**response.data[0])
 
     @staticmethod
     def get_listings(
         status: Optional[ListingStatus] = None, 
         skip: int = 0, 
         limit: int = 50
-    ) -> List[ListingResponse]:
+    ) -> List[MarketplaceListingResponse]:
         query = supabase.table("marketplace_listings").select("*").order("created_at", desc=True).range(skip, skip + limit - 1)
         if status:
             query = query.eq("status", status)
             
         response = query.execute()
-        return [ListingResponse(**l) for l in response.data]
+        return [MarketplaceListingResponse(**l) for l in response.data]
 
     @staticmethod
-    def get_listing_by_id(listing_id: str) -> Optional[ListingResponse]:
+    def get_listing_by_id(listing_id: str) -> Optional[MarketplaceListingResponse]:
         response = supabase.table("marketplace_listings").select("*").eq("id", listing_id).execute()
         if not response.data:
             return None
-        return ListingResponse(**response.data[0])
+        return MarketplaceListingResponse(**response.data[0])
 
     @staticmethod
-    def create_offer(listing_id: str, buyer_id: str, data: OfferCreate) -> OfferResponse:
+    def create_offer(listing_id: str, buyer_id: str, data: MarketplaceOfferCreate) -> MarketplaceOfferResponse:
         now = datetime.utcnow().isoformat()
         
         # Verify listing exists
@@ -63,8 +64,7 @@ class MarketplaceService:
         insert_data = {
             "listing_id": listing_id,
             "buyer_id": buyer_id,
-            "offered_price_per_kg": data.offered_price_per_kg,
-            "message": data.message,
+            "offered_price": data.offered_price,
             "status": OfferStatus.PENDING,
             "created_at": now,
             "updated_at": now
@@ -74,24 +74,49 @@ class MarketplaceService:
         if not response.data:
             raise HTTPException(status_code=500, detail="Failed to create offer")
             
-        return OfferResponse(**response.data[0])
+        return MarketplaceOfferResponse(**response.data[0])
 
     @staticmethod
-    def get_offers_for_listing(listing_id: str) -> List[OfferResponse]:
-        response = supabase.table("marketplace_offers").select("*").eq("listing_id", listing_id).order("created_at", desc=True).execute()
-        return [OfferResponse(**o) for o in response.data]
-
-    @staticmethod
-    def update_offer_status(offer_id: str, status: OfferStatus, seller: UserResponse) -> OfferResponse:
+    def accept_offer(seller_id: str, offer_id: str) -> MarketplaceOfferResponse:
         offer_res = supabase.table("marketplace_offers").select("*").eq("id", offer_id).execute()
         if not offer_res.data:
             raise HTTPException(status_code=404, detail="Offer not found")
             
-        # Optional: Security check that the current user is the seller of the listing
+        offer = offer_res.data[0]
         
-        update_data = {
-            "status": status,
-            "updated_at": datetime.utcnow().isoformat()
-        }
-        response = supabase.table("marketplace_offers").update(update_data).eq("id", offer_id).execute()
-        return OfferResponse(**response.data[0])
+        listing_res = supabase.table("marketplace_listings").select("*").eq("id", offer["listing_id"]).execute()
+        if not listing_res.data:
+            raise HTTPException(status_code=404, detail="Listing not found")
+            
+        listing = listing_res.data[0]
+        if listing["seller_id"] != seller_id:
+            raise HTTPException(status_code=403, detail="Only the seller can accept offers.")
+            
+        # Update offer to ACCEPTED
+        supabase.table("marketplace_offers").update({"status": OfferStatus.ACCEPTED}).eq("id", offer_id).execute()
+        
+        # Update listing to SOLD
+        supabase.table("marketplace_listings").update({"status": ListingStatus.SOLD}).eq("id", listing["id"]).execute()
+        
+        offer["status"] = OfferStatus.ACCEPTED
+        return MarketplaceOfferResponse(**offer)
+
+    @staticmethod
+    def generate_manifest(listing_id: str) -> TraceabilityManifestResponse:
+        listing_res = supabase.table("marketplace_listings").select("*").eq("id", listing_id).execute()
+        if not listing_res.data:
+            raise HTTPException(status_code=404, detail="Listing not found")
+            
+        listing = listing_res.data[0]
+        
+        return TraceabilityManifestResponse(
+            manifest_id=f"MNF-{uuid.uuid4().hex[:8].upper()}",
+            listing_id=listing_id,
+            waste_category_id=listing["category_id"],
+            total_quantity_kg=listing["quantity_kg"],
+            chain_of_custody=[
+                {"actor": listing["seller_id"], "action": "Collected", "date": listing["created_at"]}
+            ],
+            environmental_impact={"co2_saved_kg": listing["quantity_kg"] * 1.5},
+            generated_at=datetime.utcnow()
+        )
