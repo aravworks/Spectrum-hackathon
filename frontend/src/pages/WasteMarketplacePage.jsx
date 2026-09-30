@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import "../styles/marketplace/marketplace.css";
 
 function WasteMarketplacePage() {
@@ -8,11 +8,8 @@ function WasteMarketplacePage() {
   const [listingMode, setListingMode] = useState("ALL");
   const [selectedListing, setSelectedListing] = useState(null);
 
-  
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  import { useEffect } from "react";
   
   useEffect(() => {
     async function fetchListings() {
