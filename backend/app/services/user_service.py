@@ -8,30 +8,39 @@ class UserService:
     Abstracts database operations for User accounts using Supabase Auth.
     """
     
+
     @staticmethod
     def create_user(email: str, password: str, full_name: str, role: UserRole) -> UserResponse:
         """Register a new user via Supabase Auth."""
-        res = supabase.auth.sign_up({
-            "email": email,
-            "password": password,
-            "options": {
-                "data": {
-                    "full_name": full_name,
-                    "role": role.value
+        try:
+            res = supabase.auth.sign_up({
+                "email": email,
+                "password": password,
+                "options": {
+                    "data": {
+                        "full_name": full_name,
+                        "role": role.value
+                    }
                 }
-            }
-        })
-        if not res.user:
-            raise HTTPException(status_code=400, detail="Failed to register user")
-            
-        user_metadata = res.user.user_metadata
-        return UserResponse(
-            id=res.user.id,
-            email=res.user.email,
-            full_name=user_metadata.get("full_name", ""),
-            role=UserRole(user_metadata.get("role", UserRole.CONSUMER.value)),
-            is_active=True
-        )
+            })
+            if not res.user:
+                raise HTTPException(status_code=400, detail="Failed to register user")
+                
+            user_metadata = res.user.user_metadata or {}
+            return UserResponse(
+                id=res.user.id,
+                email=res.user.email,
+                full_name=user_metadata.get("full_name", ""),
+                role=UserRole(user_metadata.get("role", UserRole.CONSUMER.value)),
+                is_active=True
+            )
+        except Exception as e:
+            # If it's a gotrue AuthApiError (e.g. Email exists, weak password), return 400
+            msg = str(e)
+            if "already registered" in msg.lower():
+                msg = "A user with this email address has already been registered"
+            raise HTTPException(status_code=400, detail=msg)
+
     
     @staticmethod
     def get_user_by_id(user_id: str) -> Optional[UserResponse]:
