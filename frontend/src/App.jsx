@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 
@@ -47,7 +47,7 @@ function ProtectedRoute({ children }) {
 function App() {
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
 
         {/* Public Pages */}
@@ -176,7 +176,7 @@ function App() {
         />
 
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
