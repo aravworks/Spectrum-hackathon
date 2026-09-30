@@ -91,31 +91,98 @@ function ConsumerMobileDashboard({ logout, user, navigate }) {
         <h2>Welcome, {user.name || user.full_name || "User"}</h2>
         <button onClick={logout} style={{padding: '8px 16px', background: '#f5f5f5', border: 'none', borderRadius: '8px', cursor: 'pointer'}}>Logout</button>
       </div>
-      
       <p style={{marginBottom: '20px', color: '#718078'}}>Your central hub for waste intelligence and tracking.</p>
-
       <div className="mobile-grid">
          <div className="mobile-card" onClick={() => navigate('/pickup-request')}>
-           <h3>🚚 Request Pickup</h3>
+           <h3>&#x1F69A; Request Pickup</h3>
            <p>Schedule a new waste pickup at your location</p>
          </div>
          <div className="mobile-card" onClick={() => navigate('/complaint-tracking')}>
-           <h3>🕒 History & Tracking</h3>
+           <h3>&#x1F550; History &amp; Tracking</h3>
            <p>View past pickups and simulated map paths</p>
          </div>
          <div className="mobile-card" onClick={() => navigate('/ai-chatbot')}>
-           <h3>🤖 AI Assistant</h3>
+           <h3>&#x1F916; AI Assistant</h3>
            <p>Ask questions about recycling and disposal</p>
          </div>
          <div className="mobile-card" onClick={() => navigate('/waste-marketplace')}>
-           <h3>♻️ Marketplace</h3>
+           <h3>&#x267B;&#xFE0F; Marketplace</h3>
            <p>Buy or sell reusable waste materials</p>
          </div>
          <div className="mobile-card" onClick={() => navigate('/report-waste')}>
-           <h3>⚠️ Report Issue</h3>
+           <h3>&#x26A0;&#xFE0F; Report Issue</h3>
            <p>Report illegal dumping or waste hazards</p>
          </div>
       </div>
+      <ConsumerPickupHistory />
+    </div>
+  );
+}
+
+const STATUS_STYLE = {
+  PENDING:   { bg: "#fff8e1", color: "#f39c12", label: "Pending" },
+  ASSIGNED:  { bg: "#e3f2fd", color: "#2196f3", label: "Assigned" },
+  COMPLETED: { bg: "#e8f5e9", color: "#27ae60", label: "Completed" },
+  CANCELLED: { bg: "#fdecea", color: "#e74c3c", label: "Cancelled" },
+};
+
+function ConsumerPickupHistory() {
+  const [pickups, setPickups] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const token = localStorage.getItem("ecoverseToken");
+        const res = await fetch("https://spectrum-hackathon.onrender.com/api/v1/pickups", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setPickups(Array.isArray(data) ? data : []);
+        }
+      } catch (e) {
+        console.warn("Could not load pickups", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  return (
+    <div style={{ marginTop: 24 }}>
+      <div style={{ fontWeight: 700, fontSize: 12, letterSpacing: 1, color: "#718078", marginBottom: 12 }}>
+        YOUR SCHEDULED PICKUPS
+      </div>
+      {loading ? (
+        <p style={{ fontSize: 14, color: "#aaa" }}>Loading pickups...</p>
+      ) : pickups.length === 0 ? (
+        <p style={{ fontSize: 14, color: "#aaa" }}>No pickups yet. Request one above!</p>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {pickups.map((p) => {
+            const s = STATUS_STYLE[p.state] || STATUS_STYLE.PENDING;
+            const date = p.created_at
+              ? new Date(p.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })
+              : "--";
+            return (
+              <div key={p.id} style={{
+                background: s.bg, borderLeft: `4px solid ${s.color}`,
+                borderRadius: 8, padding: "10px 14px",
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ fontWeight: 700 }}>{p.category || "Pickup"}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: s.color }}>{s.label}</span>
+                </div>
+                <div style={{ fontSize: 12, color: "#666", marginTop: 4 }}>
+                  {p.estimated_weight_kg} kg &middot; {date}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
