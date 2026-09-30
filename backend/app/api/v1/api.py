@@ -21,3 +21,7 @@ api_router.include_router(dispatch.router, prefix="/dispatch", tags=["dispatch"]
 # Include the Awareness Articles (Blogs) Router
 from app.api.v1.endpoints import articles
 api_router.include_router(articles.router, prefix="/articles", tags=["articles"])
+
+# Include the Environmental Footprint Engine Router
+from app.api.v1.endpoints import environmental
+api_router.include_router(environmental.router, prefix="/environmental", tags=["environmental"])
