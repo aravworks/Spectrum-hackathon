@@ -19,14 +19,61 @@ function Sidebar() {
       label: "Climate Lab",
     },
     {
+      path: "/research-data-lab",
+      label: "Research Data Lab",
+    },
+    {
+      path: "/carbon-methane",
+      label: "Carbon & Methane",
+    },
+    {
+      path: "/satellite-gis",
+      label: "Satellite & GIS",
+    },
+    {
+      path: "/treatment-simulation",
+      label: "Treatment Simulation",
+    },
+    {
       path: "/waste-manifest",
       label: "Waste Manifest",
+    },
+    {
+      path: "/waste-reports",
+      label: "Waste Reports",
+    },
+    {
+      path: "/report-waste",
+      label: "Report Waste Issue",
+    },
+    {
+      path: "/pickup-request",
+      label: "Pickup Request",
+    },
+    {
+      path: "/complaint-tracking",
+      label: "Complaint Tracking",
+    },
+    {
+      path: "/waste-awareness",
+      label: "Waste Awareness",
+    },
+    {
+      path: "/waste-marketplace",
+      label: "EcoExchange",
+    },
+    {
+      path: "/route-optimization",
+      label: "Route Optimization",
+    },
+    {
+      path: "/rewards",
+      label: "EcoCoins & Rewards",
     },
   ];
 
   return (
     <aside className="sidebar">
-
       <div className="sidebar-section">
         <div className="sidebar-title">
           ECOVERSE INTELLIGENCE
@@ -52,7 +99,6 @@ function Sidebar() {
           Data systems operational
         </div>
       </div>
-
     </aside>
   );
 }

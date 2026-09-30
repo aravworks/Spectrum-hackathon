@@ -4,6 +4,8 @@ import MainLayout from "./layouts/MainLayout";
 import LandingPage from "./pages/LandingPage";
 import WasteMarketplacePage from "./pages/WasteMarketplacePage";
 import LoginPage from "./pages/LoginPage";
+import AIChatbotPage from "./pages/AIChatbotPage";
+import RewardsPage from "./pages/RewardsPage";
 import RegisterPage from "./pages/RegisterPage";
 import ComplaintTrackingPage from "./pages/ComplaintTrackingPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -17,7 +19,11 @@ import WasteAwarenessPage from "./pages/WasteAwarenessPage";
 import WasteReportsPage from "./pages/WasteReportsPage";
 import ReportWasteIssuePage from "./pages/ReportWasteIssuePage";
 import PickupRequestPage from "./pages/PickupRequestPage";
-
+import RouteOptimizationPage from "./pages/RouteOptimizationPage";
+import CarbonMethanePage from "./pages/CarbonMethanePage";
+import SatelliteGISPage from "./pages/SatelliteGISPage";
+import ResearchDataLabPage from "./pages/ResearchDataLabPage";
+import TreatmentSimulationPage from "./pages/TreatmentSimulationPage";
 function App() {
   return (
     <BrowserRouter>
@@ -47,10 +53,37 @@ function App() {
         ========================= */}
 
         <Route element={<MainLayout />}>
-
+<Route
+  path="/treatment-simulation"
+  element={<TreatmentSimulationPage />}
+/>
           <Route
   path="/complaint-tracking"
   element={<ComplaintTrackingPage />}
+/>
+<Route
+  path="/ai-chatbot"
+  element={<AIChatbotPage />}
+/>
+<Route
+  path="/research-data-lab"
+  element={<ResearchDataLabPage />}
+/>
+<Route
+  path="/rewards"
+  element={<RewardsPage />}
+/>
+<Route
+  path="/satellite-gis"
+  element={<SatelliteGISPage />}
+/>
+<Route
+  path="/route-optimization"
+  element={<RouteOptimizationPage />}
+/>
+<Route
+  path="/carbon-methane"
+  element={<CarbonMethanePage />}
 />
 <Route
   path="/waste-marketplace"
