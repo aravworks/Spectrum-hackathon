@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import "../styles/marketplace/marketplace.css";
 
 function WasteMarketplacePage() {
   const [activeCategory, setActiveCategory] = useState("ALL");

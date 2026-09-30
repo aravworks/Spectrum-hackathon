@@ -1,0 +1,148 @@
+/* =========================================================
+   MARKETPLACE HERO
+   ========================================================= */
+
+.marketplace-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 310px;
+  padding: 48px 50px;
+  border: 1px solid #dbe5dd;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 90% 20%, rgba(104, 143, 112, 0.12), transparent 30%),
+    linear-gradient(135deg, #eef4ef 0%, #f9fbf9 60%, #edf4ee 100%);
+}
+
+.marketplace-hero::after {
+  content: "";
+  position: absolute;
+  right: -100px;
+  bottom: -130px;
+  width: 330px;
+  height: 330px;
+  border: 1px solid rgba(82, 117, 91, 0.12);
+  border-radius: 50%;
+}
+
+.marketplace-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+}
+
+.marketplace-hero h1 {
+  max-width: 700px;
+  margin: 12px 0 14px;
+  color: #1c2d22;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(34px, 4vw, 53px);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.marketplace-hero p {
+  max-width: 610px;
+  margin: 0;
+  color: #68776d;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.marketplace-hero-actions {
+  display: flex;
+  gap: 9px;
+  margin-top: 25px;
+}
+
+
+/* =========================================================
+   HERO STATS
+   ========================================================= */
+
+.marketplace-hero-stats {
+  position: absolute;
+  z-index: 3;
+  right: 45px;
+  bottom: 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.marketplace-hero-stats > div {
+  min-width: 95px;
+  padding: 13px 14px;
+  border: 1px solid #d7e2d9;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.marketplace-hero-stats span {
+  display: block;
+  margin-bottom: 5px;
+  color: #89968d;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.marketplace-hero-stats strong {
+  color: #304838;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   HERO RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .marketplace-hero {
+    padding: 38px;
+  }
+
+  .marketplace-hero-stats {
+    position: static;
+    margin-top: 28px;
+    width: fit-content;
+  }
+}
+
+@media (max-width: 600px) {
+  .marketplace-hero {
+    min-height: auto;
+    padding: 28px 22px;
+  }
+
+  .marketplace-hero h1 {
+    font-size: 34px;
+  }
+
+  .marketplace-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .marketplace-hero-actions button {
+    width: 100%;
+  }
+
+  .marketplace-hero-stats {
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .marketplace-hero-stats > div {
+    min-width: 0;
+    padding: 11px 8px;
+  }
+
+  .marketplace-hero-stats strong {
+    font-size: 15px;
+  }
+}

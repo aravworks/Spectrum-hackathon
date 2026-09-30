@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/pickup/pickup.css";
 
 function PickupRequestPage() {
   const [submitted, setSubmitted] = useState(false);

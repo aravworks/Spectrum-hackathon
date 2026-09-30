@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import "../styles/treatment/treatment.css";
 
 const treatmentOptions = {
   Recycling: {

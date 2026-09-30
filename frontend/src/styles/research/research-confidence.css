@@ -1,0 +1,109 @@
+/* =========================================================
+   CONFIDENCE SECTION
+   ========================================================= */
+
+.research-confidence-section {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.7fr) minmax(0, 1.3fr);
+  gap: 45px;
+  align-items: center;
+  margin-top: 42px;
+  padding: 30px;
+  border: 1px solid #dce5de;
+  border-radius: 18px;
+  background: #edf4ee;
+}
+
+.research-confidence-section h2 {
+  max-width: 350px;
+  margin: 7px 0 10px;
+  color: #27392c;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.research-confidence-section > div:first-child p {
+  max-width: 380px;
+  margin: 0;
+  color: #78867d;
+  font-size: 9px;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   CONFIDENCE GRID
+   ========================================================= */
+
+.confidence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+}
+
+.confidence-card {
+  position: relative;
+  min-height: 110px;
+  padding: 17px;
+  border: 1px solid #dce5de;
+  border-radius: 11px;
+  background: #ffffff;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.confidence-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 22px rgba(37, 59, 44, 0.06);
+}
+
+.confidence-marker {
+  display: block;
+  width: 7px;
+  height: 7px;
+  margin-bottom: 13px;
+  border-radius: 50%;
+}
+
+.confidence-card strong {
+  display: block;
+  color: #536359;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.confidence-card p {
+  margin: 7px 0 0;
+  color: #8a958e;
+  font-size: 8px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   CONFIDENCE TYPES
+   ========================================================= */
+
+.confidence-card.verified .confidence-marker {
+  background: #64896b;
+  box-shadow: 0 0 0 5px rgba(100, 137, 107, 0.1);
+}
+
+.confidence-card.reported .confidence-marker {
+  background: #ad9a5e;
+  box-shadow: 0 0 0 5px rgba(173, 154, 94, 0.1);
+}
+
+.confidence-card.modelled .confidence-marker {
+  background: #66839a;
+  box-shadow: 0 0 0 5px rgba(102, 131, 154, 0.1);
+}
+
+.confidence-card.unavailable .confidence-marker {
+  background: #8b9490;
+  box-shadow: 0 0 0 5px rgba(139, 148, 144, 0.1);
+}

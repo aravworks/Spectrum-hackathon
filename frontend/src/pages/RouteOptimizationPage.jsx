@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import "../styles/route/route.css";
 
 function RouteOptimizationPage() {
   const vehicles = [

@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom";
+import "../styles/product-passport/product-passport.css";
 
 const products = {
   "eco-tee-001": {
@@ -37,7 +38,7 @@ function ProductPassportPage() {
     products[id] || products["eco-tee-001"];
 
   return (
-    <div className="page">
+    <div className="page product-passport-page">
 
       <div className="breadcrumb">
         ECOVERSE / PRODUCTS / {product.category.toUpperCase()}

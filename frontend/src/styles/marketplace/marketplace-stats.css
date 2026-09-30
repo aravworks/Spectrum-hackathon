@@ -1,0 +1,32 @@
+/* =========================================================
+   MARKETPLACE HERO STAT REFINEMENT
+   ========================================================= */
+
+.marketplace-hero-stats {
+  transition: transform 0.2s ease;
+}
+
+.marketplace-hero-stats > div {
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.marketplace-hero-stats > div:hover {
+  transform: translateY(-2px);
+  border-color: #c5d5c8;
+  box-shadow: 0 8px 20px rgba(43, 67, 50, 0.06);
+}
+
+.marketplace-hero-stats > div:nth-child(1) strong {
+  color: #304d38;
+}
+
+.marketplace-hero-stats > div:nth-child(2) strong {
+  color: #526d5a;
+}
+
+.marketplace-hero-stats > div:nth-child(3) strong {
+  color: #687d6d;
+}

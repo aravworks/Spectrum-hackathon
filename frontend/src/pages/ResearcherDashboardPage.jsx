@@ -1,3 +1,4 @@
+import "../styles/researcher/researcher.css";
 function ResearcherDashboardPage() {
   return (
     <div className="page-container">

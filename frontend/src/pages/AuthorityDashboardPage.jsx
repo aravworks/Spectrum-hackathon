@@ -1,3 +1,4 @@
+import "../styles/authority/authority.css";
 function AuthorityDashboardPage() {
   return (
     <div className="page-container">

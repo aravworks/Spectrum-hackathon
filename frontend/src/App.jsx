@@ -1,103 +1,65 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
+
 import LandingPage from "./pages/LandingPage";
-import WasteMarketplacePage from "./pages/WasteMarketplacePage";
 import LoginPage from "./pages/LoginPage";
-import AIChatbotPage from "./pages/AIChatbotPage";
-import RewardsPage from "./pages/RewardsPage";
 import RegisterPage from "./pages/RegisterPage";
-import ComplaintTrackingPage from "./pages/ComplaintTrackingPage";
+
 import DashboardPage from "./pages/DashboardPage";
+import ConsumerPage from "./pages/ConsumerPage";
+
 import ProductPassportPage from "./pages/ProductPassportPage";
 import ProductTracePage from "./pages/ProductTracePage";
+
 import EnvironmentalImpactPage from "./pages/EnvironmentalImpactPage";
 import ClimateLabPage from "./pages/ClimateLabPage";
-import ConsumerPage from "./pages/ConsumerPage";
+import CarbonMethanePage from "./pages/CarbonMethanePage";
+import SatelliteGISPage from "./pages/SatelliteGISPage";
+
+import ResearchDataLabPage from "./pages/ResearchDataLabPage";
+
 import WasteManifestPage from "./pages/WasteManifestPage";
-import WasteAwarenessPage from "./pages/WasteAwarenessPage";
 import WasteReportsPage from "./pages/WasteReportsPage";
 import ReportWasteIssuePage from "./pages/ReportWasteIssuePage";
 import PickupRequestPage from "./pages/PickupRequestPage";
+import ComplaintTrackingPage from "./pages/ComplaintTrackingPage";
+import WasteAwarenessPage from "./pages/WasteAwarenessPage";
+import WasteMarketplacePage from "./pages/WasteMarketplacePage";
+
 import RouteOptimizationPage from "./pages/RouteOptimizationPage";
-import CarbonMethanePage from "./pages/CarbonMethanePage";
-import SatelliteGISPage from "./pages/SatelliteGISPage";
-import ResearchDataLabPage from "./pages/ResearchDataLabPage";
-import TreatmentSimulationPage from "./pages/TreatmentSimulationPage";
+import TreatmentsSimulationPage from "./pages/TreatmentsSimulationPage";
+
+import RewardsPage from "./pages/RewardsPage";
+import AIChatbotPage from "./pages/AIChatbotPage";
+
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* =========================
-            PUBLIC PAGES
-        ========================= */}
+        {/* Public Pages */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-        <Route
-          path="/"
-          element={<LandingPage />}
-        />
-
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
-
-        <Route
-          path="/register"
-          element={<RegisterPage />}
-        />
-
-        {/* =========================
-            APPLICATION
-        ========================= */}
-
+        {/* Main Application */}
         <Route element={<MainLayout />}>
-<Route
-  path="/treatment-simulation"
-  element={<TreatmentSimulationPage />}
-/>
-          <Route
-  path="/complaint-tracking"
-  element={<ComplaintTrackingPage />}
-/>
-<Route
-  path="/ai-chatbot"
-  element={<AIChatbotPage />}
-/>
-<Route
-  path="/research-data-lab"
-  element={<ResearchDataLabPage />}
-/>
-<Route
-  path="/rewards"
-  element={<RewardsPage />}
-/>
-<Route
-  path="/satellite-gis"
-  element={<SatelliteGISPage />}
-/>
-<Route
-  path="/route-optimization"
-  element={<RouteOptimizationPage />}
-/>
-<Route
-  path="/carbon-methane"
-  element={<CarbonMethanePage />}
-/>
-<Route
-  path="/waste-marketplace"
-  element={<WasteMarketplacePage />}
-/>
-<Route
-  path="/waste-awareness"
-  element={<WasteAwarenessPage />}
-/>
+
+          {/* Dashboard */}
           <Route
             path="/dashboard"
             element={<DashboardPage />}
           />
 
+          {/* Consumer */}
+          <Route
+            path="/consumer"
+            element={<ConsumerPage />}
+          />
+
+          {/* Product Intelligence */}
           <Route
             path="/product/:id"
             element={<ProductPassportPage />}
@@ -108,6 +70,7 @@ function App() {
             element={<ProductTracePage />}
           />
 
+          {/* Environmental Intelligence */}
           <Route
             path="/environmental-impact"
             element={<EnvironmentalImpactPage />}
@@ -119,10 +82,22 @@ function App() {
           />
 
           <Route
-            path="/consumer"
-            element={<ConsumerPage />}
+            path="/carbon-methane"
+            element={<CarbonMethanePage />}
           />
 
+          <Route
+            path="/satellite-gis"
+            element={<SatelliteGISPage />}
+          />
+
+          {/* Research */}
+          <Route
+            path="/research-data-lab"
+            element={<ResearchDataLabPage />}
+          />
+
+          {/* Waste Intelligence */}
           <Route
             path="/waste-manifest"
             element={<WasteManifestPage />}
@@ -143,12 +118,47 @@ function App() {
             element={<PickupRequestPage />}
           />
 
+          <Route
+            path="/complaint-tracking"
+            element={<ComplaintTrackingPage />}
+          />
+
+          <Route
+            path="/waste-awareness"
+            element={<WasteAwarenessPage />}
+          />
+
+          <Route
+            path="/waste-marketplace"
+            element={<WasteMarketplacePage />}
+          />
+
+          {/* Operations */}
+          <Route
+            path="/route-optimization"
+            element={<RouteOptimizationPage />}
+          />
+
+          <Route
+            path="/treatment-simulation"
+            element={<TreatmentsSimulationPage />}
+          />
+
+          {/* Rewards */}
+          <Route
+            path="/rewards"
+            element={<RewardsPage />}
+          />
+
+          {/* AI Assistant */}
+          <Route
+            path="/ai-chatbot"
+            element={<AIChatbotPage />}
+          />
+
         </Route>
 
-        {/* =========================
-            UNKNOWN URL
-        ========================= */}
-
+        {/* Unknown Routes */}
         <Route
           path="*"
           element={<Navigate to="/" replace />}

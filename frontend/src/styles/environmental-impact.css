@@ -1,0 +1,596 @@
+/* =========================================================
+   ECOVERSE — ENVIRONMENTAL IMPACT
+   Palette: Amber + Cyan + Purple + Teal
+   ========================================================= */
+
+.environmental-impact-page {
+  padding-bottom: 50px;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.impact-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 34px 0 28px;
+}
+
+.impact-eyebrow {
+  display: block;
+  margin-bottom: 7px;
+  color: #7c3aed;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.impact-header h1 {
+  margin: 0;
+  color: #1f2937;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.impact-header p {
+  max-width: 720px;
+  margin: 10px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.impact-header-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 9px 14px;
+  border: 1px solid #bae6fd;
+  border-radius: 999px;
+  background: #f0f9ff;
+  color: #0369a1;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+.impact-header-status span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #06b6d4;
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.12);
+}
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.impact-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.impact-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-height: 125px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+}
+
+.impact-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.impact-stat-card span {
+  display: block;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.impact-stat-card strong {
+  display: block;
+  margin-top: 5px;
+  color: #1f2937;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+}
+
+.impact-stat-card small {
+  display: block;
+  margin-top: 4px;
+  color: #9ca3af;
+  font-size: 10px;
+}
+
+.waste-card {
+  border-top: 3px solid #f59e0b;
+}
+
+.waste-card .impact-stat-icon {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.water-card {
+  border-top: 3px solid #06b6d4;
+}
+
+.water-card .impact-stat-icon {
+  background: #ecfeff;
+  color: #0891b2;
+}
+
+.energy-card {
+  border-top: 3px solid #7c3aed;
+}
+
+.energy-card .impact-stat-icon {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.carbon-card {
+  border-top: 3px solid #0f766e;
+}
+
+.carbon-card .impact-stat-icon {
+  background: #f0fdfa;
+  color: #0f766e;
+}
+
+/* =========================================================
+   COMMON SECTIONS
+   ========================================================= */
+
+.impact-overview,
+.impact-breakdown-card,
+.impact-map-section,
+.impact-methodology {
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.04);
+}
+
+.impact-overview {
+  padding: 24px;
+  margin-bottom: 22px;
+}
+
+.impact-section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.impact-section-heading h2 {
+  margin: 0;
+  color: #1f2937;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 21px;
+}
+
+.impact-section-heading p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.impact-period,
+.impact-manifest {
+  padding: 8px 11px;
+  border-radius: 8px;
+  background: #f5f3ff;
+  color: #7c3aed;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   IMPACT METRICS
+   ========================================================= */
+
+.impact-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.impact-metric {
+  padding: 18px;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.metric-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.metric-top b {
+  color: #7c3aed;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 17px;
+}
+
+.metric-bar {
+  height: 8px;
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e5e7eb;
+}
+
+.metric-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.material-progress {
+  width: 68%;
+  background: #f59e0b;
+}
+
+.diversion-progress {
+  width: 74%;
+  background: #0f766e;
+}
+
+.recycled-progress {
+  width: 42%;
+  background: #0891b2;
+}
+
+.impact-metric p {
+  margin: 11px 0 0;
+  color: #94a3b8;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   BREAKDOWN
+   ========================================================= */
+
+.impact-breakdown-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+.impact-breakdown-card {
+  padding: 24px;
+}
+
+.breakdown-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.breakdown-header h2 {
+  margin: 0;
+  color: #1f2937;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 19px;
+}
+
+.breakdown-tag {
+  align-self: flex-start;
+  padding: 6px 9px;
+  border-radius: 7px;
+  background: #fff7ed;
+  color: #c2410c;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+}
+
+.breakdown-tag.verified {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.resource-list,
+.outcome-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.resource-row,
+.outcome-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #475569;
+  font-size: 12px;
+}
+
+.resource-row:last-child,
+.outcome-row:last-child {
+  border-bottom: none;
+}
+
+.resource-row > div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.resource-row strong,
+.outcome-row strong {
+  color: #1f2937;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.resource-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.resource-dot.water {
+  background: #06b6d4;
+}
+
+.resource-dot.energy {
+  background: #7c3aed;
+}
+
+.resource-dot.material {
+  background: #f59e0b;
+}
+
+.resource-dot.fuel {
+  background: #0f766e;
+}
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+.impact-map-section {
+  overflow: hidden;
+  margin-bottom: 22px;
+}
+
+.impact-map-section > .impact-section-heading {
+  padding: 24px 24px 0;
+}
+
+.environmental-map {
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.environmental-leaflet-map {
+  width: 100%;
+  height: 100%;
+}
+
+.environmental-map .leaflet-container {
+  font-family: "DM Sans", Arial, sans-serif;
+}
+
+.environmental-map .leaflet-control-zoom {
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.environmental-map .leaflet-control-zoom a {
+  color: #7c3aed !important;
+  background: #ffffff !important;
+}
+
+.environmental-map .leaflet-popup-content-wrapper {
+  border-radius: 13px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
+}
+
+.environmental-map .leaflet-popup-content {
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.environmental-map .leaflet-popup-content strong {
+  color: #0f766e;
+}
+
+.impact-map-legend {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  background: #fafafa;
+}
+
+.impact-map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.impact-map-legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-pickup {
+  background: #f59e0b;
+}
+
+.legend-transit {
+  background: #0f766e;
+}
+
+.legend-destination {
+  background: #0891b2;
+}
+
+/* =========================================================
+   METHODOLOGY
+   ========================================================= */
+
+.impact-methodology {
+  padding: 26px;
+}
+
+.impact-methodology h2 {
+  margin: 0;
+  color: #1f2937;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 21px;
+}
+
+.impact-methodology > p {
+  max-width: 720px;
+  margin: 8px 0 22px;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.methodology-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.methodology-grid > div {
+  padding: 17px;
+  border: 1px solid #ede9fe;
+  border-radius: 14px;
+  background: #faf9ff;
+}
+
+.methodology-grid span {
+  display: block;
+  margin-bottom: 8px;
+  color: #7c3aed;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.methodology-grid strong {
+  display: block;
+  color: #334155;
+  font-size: 13px;
+}
+
+.methodology-grid p {
+  margin: 7px 0 0;
+  color: #94a3b8;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .impact-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .methodology-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .impact-header {
+    flex-direction: column;
+  }
+
+  .impact-header h1 {
+    font-size: 30px;
+  }
+
+  .impact-metrics-grid,
+  .impact-breakdown-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .environmental-map {
+    height: 380px;
+  }
+}
+
+@media (max-width: 560px) {
+  .impact-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .methodology-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .impact-overview,
+  .impact-breakdown-card,
+  .impact-methodology {
+    padding: 18px;
+  }
+
+  .impact-section-heading {
+    flex-direction: column;
+  }
+
+  .impact-header h1 {
+    font-size: 26px;
+  }
+
+  .environmental-map {
+    height: 320px;
+  }
+
+  .impact-map-legend {
+    gap: 12px;
+  }
+}

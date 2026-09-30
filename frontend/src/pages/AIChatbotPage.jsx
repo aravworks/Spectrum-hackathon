@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/ai-chatbot/ai-chatbot.css";
 
 const suggestedQuestions = [
   "How does ECOVERSE trace a product lifecycle?",

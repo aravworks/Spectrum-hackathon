@@ -1,3 +1,4 @@
+import "../styles/awareness/awareness.css";
 function WasteAwarenessPage() {
   const categories = [
     {

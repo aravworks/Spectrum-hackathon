@@ -1,0 +1,1179 @@
+/* =========================================================
+   ECOVERSE CLIMATE LAB
+   3D What-If Environmental Modelling Interface
+   ========================================================= */
+
+.climate-lab-page {
+  --climate-dark: #10202b;
+  --climate-blue: #2563eb;
+  --climate-cyan: #06b6d4;
+  --climate-teal: #0d9488;
+  --climate-green: #16a34a;
+  --climate-lime: #84cc16;
+  --climate-orange: #f59e0b;
+  --climate-coral: #f97316;
+  --climate-violet: #7c3aed;
+  --climate-purple: #a855f7;
+
+  --climate-text: #172033;
+  --climate-muted: #667085;
+  --climate-border: rgba(23, 32, 51, 0.11);
+
+  position: relative;
+  isolation: isolate;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.climate-lab-page .page-header {
+  position: relative;
+  overflow: hidden;
+
+  padding: 34px;
+
+  margin-bottom: 24px;
+
+  border-radius: 25px;
+
+  background:
+    radial-gradient(
+      circle at 92% 15%,
+      rgba(6, 182, 212, 0.18),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 72% 100%,
+      rgba(124, 58, 237, 0.12),
+      transparent 27%
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f3f9ff
+    );
+
+  border: 1px solid rgba(6, 182, 212, 0.14);
+
+  box-shadow:
+    0 22px 45px rgba(23, 55, 78, 0.10),
+    0 7px 15px rgba(23, 55, 78, 0.06);
+
+  transform-style: preserve-3d;
+}
+
+.climate-lab-page .page-header::before {
+  content: "";
+
+  position: absolute;
+
+  width: 210px;
+  height: 210px;
+
+  right: -65px;
+  top: -110px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(6, 182, 212, 0.20);
+
+  box-shadow:
+    0 0 0 24px rgba(6, 182, 212, 0.035),
+    0 0 0 50px rgba(37, 99, 235, 0.025);
+
+  pointer-events: none;
+}
+
+.climate-lab-page .page-header h1 {
+  margin: 8px 0 10px;
+
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  line-height: 1;
+
+  letter-spacing: -0.05em;
+
+  background:
+    linear-gradient(
+      105deg,
+      var(--climate-dark),
+      var(--climate-blue),
+      var(--climate-violet)
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  transform: translateZ(18px);
+}
+
+.climate-lab-page .page-header p {
+  max-width: 680px;
+
+  color: var(--climate-muted);
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.climate-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-top: 20px;
+
+  padding: 9px 14px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.09),
+      rgba(37, 99, 235, 0.08)
+    );
+
+  border: 1px solid rgba(124, 58, 237, 0.17);
+
+  color: var(--climate-violet);
+
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.climate-status .status-dot {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  background: var(--climate-violet);
+
+  box-shadow:
+    0 0 0 4px rgba(124, 58, 237, 0.10),
+    0 0 14px rgba(124, 58, 237, 0.45);
+}
+
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.climate-intro {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+
+  padding: 27px 30px;
+
+  margin-bottom: 24px;
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ecfeff,
+      #eef7ff
+    );
+
+  border: 1px solid rgba(6, 182, 212, 0.16);
+
+  box-shadow:
+    0 17px 32px rgba(6, 100, 130, 0.08);
+
+  transform-style: preserve-3d;
+}
+
+.climate-intro h2 {
+  margin: 7px 0 8px;
+
+  color: var(--climate-dark);
+
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.climate-intro p {
+  max-width: 700px;
+
+  margin: 0;
+
+  color: #617181;
+
+  line-height: 1.6;
+}
+
+.modelled-label {
+  flex: 0 0 auto;
+
+  padding: 12px 16px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--climate-violet),
+      var(--climate-blue)
+    );
+
+  color: white;
+
+  font-size: 0.67rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+
+  box-shadow:
+    0 10px 20px rgba(79, 70, 229, 0.22);
+
+  transform:
+    translateZ(15px)
+    rotateZ(1deg);
+}
+
+
+/* =========================================================
+   COMMON PANELS
+   ========================================================= */
+
+.climate-lab-page .panel {
+  position: relative;
+  overflow: hidden;
+
+  padding: 27px;
+
+  border-radius: 23px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fbff
+    );
+
+  border: 1px solid var(--climate-border);
+
+  box-shadow:
+    0 20px 40px rgba(27, 47, 72, 0.09),
+    0 7px 15px rgba(27, 47, 72, 0.05);
+
+  transform-style: preserve-3d;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.climate-lab-page .panel:hover {
+  transform:
+    translateY(-4px)
+    rotateX(0.5deg);
+
+  box-shadow:
+    0 27px 48px rgba(27, 47, 72, 0.12);
+}
+
+.climate-lab-page .panel::after {
+  content: "";
+
+  position: absolute;
+
+  width: 150px;
+  height: 150px;
+
+  right: -75px;
+  bottom: -75px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.055),
+      transparent 68%
+    );
+
+  pointer-events: none;
+}
+
+.climate-lab-page .panel-heading {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 22px;
+}
+
+.climate-lab-page .panel-heading h2 {
+  margin: 6px 0 6px;
+
+  color: var(--climate-dark);
+
+  font-size: 1.35rem;
+  letter-spacing: -0.025em;
+}
+
+.climate-lab-page .panel-heading p {
+  margin: 0;
+
+  color: var(--climate-muted);
+
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   SCENARIO SELECTOR
+   ========================================================= */
+
+.scenario-grid {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 13px;
+}
+
+.scenario-card {
+  position: relative;
+
+  min-height: 145px;
+
+  padding: 18px;
+
+  text-align: left;
+
+  border-radius: 17px;
+
+  background: #ffffff;
+
+  border: 1px solid #dce3ec;
+
+  color: var(--climate-text);
+
+  box-shadow:
+    0 8px 15px rgba(31, 50, 75, 0.05);
+
+  cursor: pointer;
+
+  transform-style: preserve-3d;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.scenario-card:nth-child(1) {
+  border-top: 4px solid #64748b;
+}
+
+.scenario-card:nth-child(2) {
+  border-top: 4px solid var(--climate-green);
+}
+
+.scenario-card:nth-child(3) {
+  border-top: 4px solid var(--climate-blue);
+}
+
+.scenario-card:nth-child(4) {
+  border-top: 4px solid var(--climate-violet);
+}
+
+.scenario-card:hover {
+  transform:
+    translateY(-6px)
+    translateZ(9px);
+
+  box-shadow:
+    0 16px 27px rgba(31, 50, 75, 0.11);
+}
+
+.scenario-card.selected {
+  background:
+    linear-gradient(
+      145deg,
+      #eefaff,
+      #f2efff
+    );
+
+  border-color: rgba(37, 99, 235, 0.40);
+
+  box-shadow:
+    0 15px 28px rgba(37, 99, 235, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transform:
+    translateY(-4px)
+    translateZ(8px);
+}
+
+.scenario-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 27px;
+
+  margin-bottom: 15px;
+
+  border-radius: 8px;
+
+  background: #eef2f7;
+
+  color: #64748b;
+
+  font-size: 0.62rem;
+  font-weight: 900;
+}
+
+.scenario-card:nth-child(2) .scenario-number {
+  background: #ecfdf3;
+  color: var(--climate-green);
+}
+
+.scenario-card:nth-child(3) .scenario-number {
+  background: #eff6ff;
+  color: var(--climate-blue);
+}
+
+.scenario-card:nth-child(4) .scenario-number {
+  background: #f5f3ff;
+  color: var(--climate-violet);
+}
+
+.scenario-card strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 0.86rem;
+}
+
+.scenario-card span {
+  display: block;
+
+  color: var(--climate-muted);
+
+  font-size: 0.71rem;
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   CONTROL + SUMMARY GRID
+   ========================================================= */
+
+.climate-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.5fr)
+    minmax(300px, 0.8fr);
+
+  gap: 22px;
+
+  margin: 24px 0;
+}
+
+
+/* =========================================================
+   SCENARIO CONTROLS
+   ========================================================= */
+
+.scenario-controls {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  gap: 21px;
+}
+
+.scenario-control {
+  padding: 17px;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f7fbff
+    );
+
+  border: 1px solid #e2e8f0;
+
+  box-shadow:
+    0 7px 14px rgba(31, 50, 75, 0.045);
+
+  transform-style: preserve-3d;
+}
+
+.scenario-control:nth-child(1) {
+  border-left: 4px solid var(--climate-green);
+}
+
+.scenario-control:nth-child(2) {
+  border-left: 4px solid var(--climate-blue);
+}
+
+.scenario-control:nth-child(3) {
+  border-left: 4px solid var(--climate-violet);
+}
+
+.control-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 14px;
+}
+
+.control-header strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--climate-dark);
+
+  font-size: 0.87rem;
+}
+
+.control-header span {
+  display: block;
+
+  max-width: 430px;
+
+  color: var(--climate-muted);
+
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.control-header b {
+  flex: 0 0 auto;
+
+  min-width: 62px;
+
+  padding: 9px 11px;
+
+  text-align: center;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef7ff,
+      #f1edff
+    );
+
+  color: var(--climate-blue);
+
+  font-size: 0.85rem;
+
+  box-shadow:
+    0 5px 10px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   RANGE INPUTS
+   ========================================================= */
+
+.scenario-control input[type="range"] {
+  width: 100%;
+
+  height: 7px;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--climate-cyan),
+      var(--climate-blue),
+      var(--climate-violet)
+    );
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+.scenario-control input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  border: 4px solid white;
+
+  background: var(--climate-blue);
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.30);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.scenario-control input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.16);
+
+  box-shadow:
+    0 5px 14px rgba(37, 99, 235, 0.38);
+}
+
+.scenario-control input[type="range"]::-moz-range-thumb {
+  width: 17px;
+  height: 17px;
+
+  border-radius: 50%;
+
+  border: 4px solid white;
+
+  background: var(--climate-blue);
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.30);
+}
+
+.range-labels {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 7px;
+
+  color: #98a2b3;
+
+  font-size: 0.64rem;
+}
+
+
+/* =========================================================
+   ACTIVE SCENARIO SUMMARY
+   ========================================================= */
+
+.scenario-summary {
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 58, 237, 0.14),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8f6ff
+    ) !important;
+
+  border-top: 4px solid var(--climate-violet) !important;
+}
+
+.scenario-summary h2 {
+  position: relative;
+  z-index: 2;
+
+  margin: 9px 0 7px;
+
+  color: var(--climate-dark);
+
+  font-size: 1.55rem;
+  letter-spacing: -0.035em;
+}
+
+.scenario-summary > p {
+  position: relative;
+  z-index: 2;
+
+  margin: 0;
+
+  color: var(--climate-muted);
+
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.assumption-list {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+
+  gap: 10px;
+
+  margin-top: 25px;
+}
+
+.assumption-list > div {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 13px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.78);
+
+  border: 1px solid rgba(124, 58, 237, 0.10);
+}
+
+.assumption-list span {
+  color: var(--climate-muted);
+
+  font-size: 0.7rem;
+}
+
+.assumption-list strong {
+  color: var(--climate-violet);
+
+  font-size: 0.83rem;
+}
+
+
+/* =========================================================
+   RESULTS
+   ========================================================= */
+
+.climate-results {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+.climate-result {
+  position: relative;
+
+  min-height: 185px;
+
+  padding: 19px;
+
+  border-radius: 17px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  box-shadow:
+    0 9px 18px rgba(31, 50, 75, 0.06);
+
+  transform-style: preserve-3d;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.climate-result:hover {
+  transform:
+    translateY(-6px)
+    translateZ(10px);
+
+  box-shadow:
+    0 17px 28px rgba(31, 50, 75, 0.11);
+}
+
+.climate-result:nth-child(1) {
+  border-top: 4px solid var(--climate-cyan);
+  background: linear-gradient(145deg, #ffffff, #effcff);
+}
+
+.climate-result:nth-child(2) {
+  border-top: 4px solid var(--climate-orange);
+  background: linear-gradient(145deg, #ffffff, #fff9ed);
+}
+
+.climate-result:nth-child(3) {
+  border-top: 4px solid var(--climate-coral);
+  background: linear-gradient(145deg, #ffffff, #fff5f1);
+}
+
+.climate-result:nth-child(4) {
+  border-top: 4px solid var(--climate-violet);
+  background: linear-gradient(145deg, #ffffff, #f8f5ff);
+}
+
+.climate-result > span {
+  display: block;
+
+  margin-bottom: 11px;
+
+  color: #667085;
+
+  font-size: 0.63rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.climate-result strong {
+  display: block;
+
+  color: var(--climate-dark);
+
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.climate-result small {
+  display: block;
+
+  margin-top: 8px;
+
+  color: #8a94a6;
+
+  font-size: 0.67rem;
+}
+
+.result-change {
+  display: inline-flex;
+
+  margin-top: 17px;
+
+  padding: 6px 9px;
+
+  border-radius: 8px;
+
+  background: #ecfdf3;
+
+  color: var(--climate-green);
+
+  font-size: 0.67rem;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   MODELLED BADGE
+   ========================================================= */
+
+.dashboard-badge {
+  flex: 0 0 auto;
+
+  padding: 8px 12px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.10),
+      rgba(168, 85, 247, 0.08)
+    );
+
+  border: 1px solid rgba(124, 58, 237, 0.18);
+
+  color: var(--climate-violet);
+
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   INTERPRETATION
+   ========================================================= */
+
+.climate-interpretation {
+  position: relative;
+  overflow: hidden;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.85fr)
+    minmax(0, 1.4fr);
+
+  gap: 30px;
+
+  margin-top: 24px;
+
+  padding: 31px;
+
+  border-radius: 24px;
+
+  color: white;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 58, 237, 0.28),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(6, 182, 212, 0.20),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #10202b,
+      #17364b,
+      #272451
+    );
+
+  box-shadow:
+    0 24px 48px rgba(16, 32, 43, 0.18);
+
+  transform-style: preserve-3d;
+}
+
+.climate-interpretation::before {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  right: -80px;
+  bottom: -110px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 0 0 25px rgba(255, 255, 255, 0.025),
+    0 0 0 50px rgba(255, 255, 255, 0.018);
+
+  pointer-events: none;
+}
+
+.climate-interpretation .eyebrow {
+  color: #67d7e8;
+}
+
+.climate-interpretation h2 {
+  margin: 8px 0 10px;
+
+  font-size: 1.7rem;
+
+  letter-spacing: -0.035em;
+}
+
+.climate-interpretation > div:first-child p {
+  max-width: 530px;
+
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.66);
+
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.interpretation-points {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.interpretation-points > div {
+  min-height: 145px;
+
+  padding: 17px;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.07);
+
+  border: 1px solid rgba(255, 255, 255, 0.11);
+
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 9px 18px rgba(0, 0, 0, 0.10);
+
+  transform-style: preserve-3d;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.interpretation-points > div:hover {
+  transform:
+    translateY(-6px)
+    translateZ(10px);
+
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.interpretation-points > div:nth-child(1) {
+  border-top: 3px solid var(--climate-cyan);
+}
+
+.interpretation-points > div:nth-child(2) {
+  border-top: 3px solid var(--climate-orange);
+}
+
+.interpretation-points > div:nth-child(3) {
+  border-top: 3px solid var(--climate-violet);
+}
+
+.interpretation-points span {
+  display: block;
+
+  margin-bottom: 13px;
+
+  color: #71dce9;
+
+  font-size: 0.64rem;
+  font-weight: 900;
+}
+
+.interpretation-points strong {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 0.78rem;
+}
+
+.interpretation-points p {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.60);
+
+  font-size: 0.69rem;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+  .scenario-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .climate-results {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .climate-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .climate-interpretation {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .climate-lab-page .page-header {
+    padding: 25px;
+  }
+
+  .climate-intro {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 23px;
+  }
+
+  .scenario-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .climate-results {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .climate-lab-page .panel {
+    padding: 21px;
+  }
+
+  .climate-interpretation {
+    padding: 23px;
+  }
+
+  .interpretation-points {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 470px) {
+  .climate-results {
+    grid-template-columns: 1fr;
+  }
+
+  .climate-lab-page .page-header h1 {
+    font-size: 2.25rem;
+  }
+
+  .control-header {
+    align-items: flex-start;
+  }
+
+  .control-header span {
+    font-size: 0.66rem;
+  }
+
+  .climate-result {
+    min-height: 160px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .climate-lab-page .panel,
+  .scenario-card,
+  .climate-result,
+  .interpretation-points > div {
+    transition: none;
+  }
+}

@@ -1,0 +1,379 @@
+/* =========================================================
+   RESEARCHER DASHBOARD
+   3D RESEARCH INTELLIGENCE
+   Palette: Purple + Cyan + Amber + Teal
+========================================================= */
+
+.researcher-dashboard-page {
+  --research-purple: #7c3aed;
+  --research-purple-dark: #4c1d95;
+  --research-cyan: #0891b2;
+  --research-teal: #0d9488;
+  --research-amber: #d97706;
+  --research-pink: #db2777;
+
+  --research-bg: #f6f5fb;
+  --research-card: #ffffff;
+  --research-border: #e4def2;
+  --research-text: #211b32;
+  --research-muted: #746d82;
+
+  position: relative;
+  min-height: 500px;
+  padding: 58px;
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(8, 145, 178, 0.12),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 12% 90%,
+      rgba(124, 58, 237, 0.12),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f7f5fc 55%,
+      #eef8fa 100%
+    );
+
+  border: 1px solid var(--research-border);
+
+  box-shadow:
+    0 25px 55px rgba(76, 29, 149, 0.10),
+    0 8px 20px rgba(15, 23, 42, 0.05);
+
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+
+
+/* =========================================================
+   DECORATIVE RESEARCH GRID
+========================================================= */
+
+.researcher-dashboard-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      rgba(124, 58, 237, 0.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(124, 58, 237, 0.045) 1px,
+      transparent 1px
+    );
+
+  background-size: 42px 42px;
+
+  mask-image:
+    linear-gradient(
+      to bottom right,
+      black,
+      transparent 75%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   ORBIT DECORATIONS
+========================================================= */
+
+.researcher-dashboard-page::after {
+  content: "";
+  position: absolute;
+
+  width: 320px;
+  height: 320px;
+
+  right: -130px;
+  top: -130px;
+
+  border: 1px solid rgba(8, 145, 178, 0.2);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 30px rgba(8, 145, 178, 0.035),
+    0 0 0 65px rgba(124, 58, 237, 0.025);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CONTENT LAYER
+========================================================= */
+
+.researcher-dashboard-page > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* =========================================================
+   KICKER
+========================================================= */
+
+.researcher-dashboard-page .section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 8px 13px;
+
+  border: 1px solid rgba(124, 58, 237, 0.18);
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f3e8ff,
+      #ecfeff
+    );
+
+  color: var(--research-purple);
+
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+
+  box-shadow:
+    0 7px 15px rgba(124, 58, 237, 0.08);
+
+  transform: translateZ(20px);
+}
+
+.researcher-dashboard-page .section-kicker::before {
+  content: "";
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--research-cyan);
+
+  box-shadow:
+    0 0 0 5px rgba(8, 145, 178, 0.12);
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.researcher-dashboard-page h1 {
+  max-width: 700px;
+
+  margin: 18px 0 13px;
+
+  color: var(--research-text);
+
+  font-size: clamp(
+    38px,
+    6vw,
+    64px
+  );
+
+  line-height: 0.98;
+
+  letter-spacing: -2.5px;
+
+  font-weight: 800;
+
+  transform:
+    translateZ(38px);
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.researcher-dashboard-page > p {
+  max-width: 650px;
+
+  margin: 0;
+
+  color: var(--research-muted);
+
+  font-size: 16px;
+  line-height: 1.8;
+
+  transform:
+    translateZ(28px);
+}
+
+
+/* =========================================================
+   RESEARCH SIGNALS
+========================================================= */
+
+.researcher-dashboard-page > p::after {
+  content: "  •  MATERIAL FLOWS  •  ENVIRONMENTAL DATA  •  DATA GAPS";
+
+  display: block;
+
+  margin-top: 24px;
+
+  color: var(--research-cyan);
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: 1.4px;
+}
+
+
+/* =========================================================
+   FLOATING RESEARCH CARDS
+========================================================= */
+
+.researcher-dashboard-page {
+  isolation: isolate;
+}
+
+.researcher-dashboard-page h1::after {
+  content: "";
+
+  display: block;
+
+  width: 100px;
+  height: 5px;
+
+  margin-top: 19px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--research-purple),
+      var(--research-cyan),
+      var(--research-teal)
+    );
+
+  box-shadow:
+    0 5px 15px rgba(8, 145, 178, 0.18);
+}
+
+
+/* =========================================================
+   DESKTOP DEPTH ELEMENTS
+========================================================= */
+
+@media (min-width: 900px) {
+  .researcher-dashboard-page {
+    padding-right: 40%;
+  }
+
+  .researcher-dashboard-page > p {
+    max-width: 590px;
+  }
+
+  .researcher-dashboard-page::before {
+    opacity: 0.9;
+  }
+
+  .researcher-dashboard-page h1 {
+    text-shadow:
+      0 4px 0 rgba(124, 58, 237, 0.035);
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 899px) {
+  .researcher-dashboard-page {
+    padding: 45px;
+  }
+
+  .researcher-dashboard-page h1 {
+    font-size: 48px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .researcher-dashboard-page {
+    min-height: 420px;
+    padding: 32px 24px;
+
+    border-radius: 20px;
+  }
+
+  .researcher-dashboard-page::after {
+    width: 210px;
+    height: 210px;
+
+    right: -110px;
+    top: -90px;
+  }
+
+  .researcher-dashboard-page h1 {
+    margin-top: 15px;
+
+    font-size: 38px;
+    letter-spacing: -1.5px;
+  }
+
+  .researcher-dashboard-page > p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .researcher-dashboard-page > p::after {
+    line-height: 2;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+  .researcher-dashboard-page {
+    padding: 27px 19px;
+  }
+
+  .researcher-dashboard-page h1 {
+    font-size: 32px;
+  }
+
+  .researcher-dashboard-page .section-kicker {
+    font-size: 9px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .researcher-dashboard-page,
+  .researcher-dashboard-page * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

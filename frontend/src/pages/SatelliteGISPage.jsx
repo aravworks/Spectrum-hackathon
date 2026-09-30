@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-
+import "../styles/satellite/satellite.css";
 const locations = {
   "Kanpur Industrial Zone": {
     region: "Kanpur, Uttar Pradesh",

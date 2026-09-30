@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/complaint-tracking/complaint-tracking.css";
 
 function ComplaintTrackingPage() {
   const [complaintId, setComplaintId] = useState("");

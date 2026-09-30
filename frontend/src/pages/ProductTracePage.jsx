@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-
+import "../styles/product-trace/product-trace.css";
 const stages = [
   {
     number: "01",
@@ -63,7 +63,7 @@ function ProductTracePage() {
   const { id } = useParams();
 
   return (
-    <div className="page">
+    <div className="page product-trace-page">
 
       <div className="breadcrumb">
         ECOVERSE / PRODUCT / TRACE

@@ -1,3 +1,4 @@
+import "../styles/company/company.css";
 function CompanyDashboardPage() {
   return (
     <div className="page-container">

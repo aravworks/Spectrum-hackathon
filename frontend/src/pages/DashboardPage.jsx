@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import "../styles/dashboard/dashboard.css";
 const roleData = {
   Consumer: {
     eyebrow: "CONSUMER INTELLIGENCE",

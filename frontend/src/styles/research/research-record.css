@@ -1,0 +1,71 @@
+/* =========================================================
+   RESEARCH METHODOLOGY
+   ========================================================= */
+
+.research-methodology {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr);
+  gap: 45px;
+  align-items: center;
+  margin-top: 42px;
+  padding: 31px 4px;
+}
+
+.research-methodology h2 {
+  max-width: 380px;
+  margin: 7px 0 10px;
+  color: #27382c;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 25px;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.research-methodology > div:first-child > p {
+  max-width: 390px;
+  margin: 0;
+  color: #7c8981;
+  font-size: 9px;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   METHODOLOGY GRID
+   ========================================================= */
+
+.methodology-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.methodology-grid > div {
+  min-height: 105px;
+  padding: 17px;
+  border: 1px solid #dfe7e0;
+  border-radius: 11px;
+  background: #ffffff;
+}
+
+.methodology-grid span {
+  display: block;
+  margin-bottom: 12px;
+  color: #98a39b;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.methodology-grid strong {
+  display: block;
+  color: #4b5d50;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.methodology-grid p {
+  margin: 6px 0 0;
+  color: #89948d;
+  font-size: 8px;
+  line-height: 1.5;
+}

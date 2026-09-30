@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-
+import "../styles/waste-reports/waste-reports.css";
 const wasteData = [
   {
     month: "Apr",

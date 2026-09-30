@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import EnvironmentalMap from "../components/EnvironmentalMap";
+import "../styles/manifest/manifest.css";
 
 const initialManifests = [
   {

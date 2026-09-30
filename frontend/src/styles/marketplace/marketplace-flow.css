@@ -1,0 +1,229 @@
+/* =========================================================
+   MATERIAL FLOW
+   ========================================================= */
+
+.marketplace-flow {
+  margin-top: 42px;
+  padding: 28px;
+}
+
+.marketplace-flow .section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.marketplace-flow .section-heading h2 {
+  margin: 6px 0 0;
+  color: #26382b;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 23px;
+  letter-spacing: -0.035em;
+}
+
+.marketplace-flow .section-meta {
+  color: #8b968f;
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   FLOW GRID
+   ========================================================= */
+
+.marketplace-flow-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    30px
+    minmax(0, 1fr)
+    30px
+    minmax(0, 1fr)
+    30px
+    minmax(0, 1fr);
+  align-items: center;
+  gap: 5px;
+  margin-top: 25px;
+}
+
+.marketplace-flow-grid > div:not(.marketplace-flow-arrow) {
+  min-height: 120px;
+  padding: 18px;
+  border: 1px solid #dfe7e0;
+  border-radius: 12px;
+  background: #f9fbf9;
+}
+
+.marketplace-flow-grid > div:not(.marketplace-flow-arrow) > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 27px;
+  margin-bottom: 14px;
+  border-radius: 7px;
+  background: #e5eee6;
+  color: #4e6955;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.marketplace-flow-grid strong {
+  display: block;
+  color: #3c5042;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.marketplace-flow-grid p {
+  margin: 6px 0 0;
+  color: #849088;
+  font-size: 8px;
+  line-height: 1.55;
+}
+
+.marketplace-flow-arrow {
+  color: #9ca9a0;
+  font-size: 17px;
+  text-align: center;
+}
+
+
+/* =========================================================
+   TRACEABILITY SECTION
+   ========================================================= */
+
+.marketplace-trace-section {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.7fr) minmax(0, 1.3fr);
+  gap: 35px;
+  align-items: center;
+  margin-top: 42px;
+  padding: 30px;
+  border: 1px solid #dce5de;
+  border-radius: 18px;
+  background: #edf4ee;
+}
+
+.marketplace-trace-copy h2 {
+  margin: 7px 0 10px;
+  color: #26392c;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 25px;
+  letter-spacing: -0.04em;
+}
+
+.marketplace-trace-copy p {
+  margin: 0;
+  color: #77857b;
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   TRACEABILITY CARDS
+   ========================================================= */
+
+.marketplace-trace-cards {
+  display: grid;
+  grid-template-columns: 1fr 25px 1fr 25px 1fr;
+  align-items: center;
+  gap: 6px;
+}
+
+.marketplace-trace-cards > div:not(.trace-arrow) {
+  min-height: 105px;
+  padding: 17px;
+  border: 1px solid #d6e2d8;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.marketplace-trace-cards span {
+  display: block;
+  margin-bottom: 9px;
+  color: #87938b;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.marketplace-trace-cards strong {
+  display: block;
+  color: #425747;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.marketplace-trace-cards small {
+  display: block;
+  margin-top: 5px;
+  color: #96a099;
+  font-size: 7px;
+  line-height: 1.4;
+}
+
+.trace-arrow {
+  color: #829388;
+  font-size: 16px;
+  text-align: center;
+}
+
+
+/* =========================================================
+   FLOW RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .marketplace-flow-grid {
+    grid-template-columns: 1fr 30px 1fr;
+  }
+
+  .marketplace-flow-grid > div:nth-child(6),
+  .marketplace-flow-grid > div:nth-child(7) {
+    display: none;
+  }
+
+  .marketplace-trace-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .marketplace-flow {
+    padding: 21px;
+  }
+
+  .marketplace-flow .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .marketplace-flow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .marketplace-flow-arrow {
+    transform: rotate(90deg);
+  }
+
+  .marketplace-flow-grid > div:nth-child(6),
+  .marketplace-flow-grid > div:nth-child(7) {
+    display: block;
+  }
+
+  .marketplace-trace-section {
+    padding: 22px;
+  }
+
+  .marketplace-trace-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .trace-arrow {
+    transform: rotate(90deg);
+  }
+}

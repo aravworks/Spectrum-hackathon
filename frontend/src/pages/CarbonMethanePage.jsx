@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import "../styles/carbon-methane/carbon-methane.css";
 import {
   Area,
   AreaChart,

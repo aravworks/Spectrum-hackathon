@@ -1,0 +1,866 @@
+/* =========================================================
+   ECOVERSE — REPORT WASTE ISSUE
+   3D Community Environmental Intelligence
+   ========================================================= */
+
+.report-waste-page {
+  --rw-bg: #f5f7f8;
+  --rw-text: #17231e;
+  --rw-muted: #68756f;
+  --rw-border: rgba(23, 35, 30, 0.1);
+
+  --rw-coral: #ff6b5f;
+  --rw-orange: #ff9f43;
+  --rw-cyan: #20b8c7;
+  --rw-blue: #3478db;
+  --rw-violet: #7667e8;
+  --rw-green: #2da86f;
+  --rw-yellow: #e6b84c;
+
+  color: var(--rw-text);
+  min-height: 100%;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.report-waste-page .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  margin-bottom: 32px;
+}
+
+.report-waste-page .page-header h1 {
+  margin: 8px 0 10px;
+  font-size: clamp(2rem, 4vw, 3.3rem);
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+.report-waste-page .page-header p {
+  max-width: 690px;
+  margin: 0;
+  color: var(--rw-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.report-waste-page .eyebrow {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rw-cyan);
+}
+
+.report-user-badge {
+  flex-shrink: 0;
+  padding: 11px 16px;
+  border: 1px solid rgba(32, 184, 199, 0.25);
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(32, 184, 199, 0.12),
+      rgba(52, 120, 219, 0.1)
+    );
+  color: #087f8d;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  box-shadow:
+    0 8px 18px rgba(32, 184, 199, 0.1),
+    inset 0 1px rgba(255, 255, 255, 0.8);
+}
+
+
+/* =========================================================
+   MAIN GRID
+   ========================================================= */
+
+.report-waste-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.75fr);
+  gap: 26px;
+  align-items: start;
+}
+
+
+/* =========================================================
+   3D PANEL BASE
+   ========================================================= */
+
+.report-waste-page .panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--rw-border);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+
+  box-shadow:
+    0 18px 40px rgba(23, 35, 30, 0.09),
+    0 5px 12px rgba(23, 35, 30, 0.05),
+    inset 0 1px rgba(255, 255, 255, 0.95);
+
+  transform: perspective(1200px) translateZ(0);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.report-waste-page .panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--rw-coral),
+    var(--rw-orange),
+    var(--rw-cyan),
+    var(--rw-violet)
+  );
+}
+
+.report-waste-page .panel:hover {
+  transform:
+    perspective(1200px)
+    translateY(-4px)
+    rotateX(0.5deg);
+  box-shadow:
+    0 26px 52px rgba(23, 35, 30, 0.13),
+    0 8px 18px rgba(23, 35, 30, 0.06),
+    inset 0 1px rgba(255, 255, 255, 1);
+}
+
+
+/* =========================================================
+   FORM PANEL
+   ========================================================= */
+
+.report-form-panel {
+  padding: 30px;
+}
+
+.report-form-panel::before {
+  background: linear-gradient(
+    90deg,
+    var(--rw-coral),
+    var(--rw-orange)
+  );
+}
+
+.panel-heading {
+  margin-bottom: 26px;
+}
+
+.panel-heading h2 {
+  margin: 7px 0 6px;
+  font-size: 1.45rem;
+  letter-spacing: -0.025em;
+}
+
+.panel-heading p {
+  margin: 0;
+  color: var(--rw-muted);
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.report-waste-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.report-waste-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  color: #34423b;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.report-waste-form input,
+.report-waste-form select,
+.report-waste-form textarea {
+  width: 100%;
+  border: 1px solid rgba(23, 35, 30, 0.13);
+  border-radius: 13px;
+  outline: none;
+
+  background: #fbfcfb;
+  color: var(--rw-text);
+
+  padding: 13px 14px;
+
+  box-shadow:
+    inset 0 2px 5px rgba(23, 35, 30, 0.035),
+    0 2px 0 rgba(255, 255, 255, 0.9);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.report-waste-form input,
+.report-waste-form select {
+  min-height: 48px;
+}
+
+.report-waste-form textarea {
+  min-height: 155px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.report-waste-form input::placeholder,
+.report-waste-form textarea::placeholder {
+  color: #9ba6a1;
+}
+
+.report-waste-form input:hover,
+.report-waste-form select:hover,
+.report-waste-form textarea:hover {
+  border-color: rgba(32, 184, 199, 0.3);
+}
+
+.report-waste-form input:focus,
+.report-waste-form select:focus,
+.report-waste-form textarea:focus {
+  border-color: var(--rw-cyan);
+
+  box-shadow:
+    0 0 0 4px rgba(32, 184, 199, 0.1),
+    0 7px 18px rgba(32, 184, 199, 0.08);
+
+  transform: translateY(-1px);
+}
+
+.report-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+
+/* =========================================================
+   EVIDENCE BOX
+   ========================================================= */
+
+.report-evidence-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 18px 20px;
+
+  border: 1px solid rgba(118, 103, 232, 0.18);
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(118, 103, 232, 0.09),
+      rgba(32, 184, 199, 0.06)
+    );
+
+  box-shadow:
+    0 10px 20px rgba(118, 103, 232, 0.06),
+    inset 0 1px rgba(255, 255, 255, 0.8);
+
+  transform: perspective(900px) translateZ(4px);
+}
+
+.report-evidence-box strong {
+  font-size: 0.9rem;
+}
+
+.report-evidence-box p {
+  margin: 5px 0 0;
+  color: var(--rw-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.report-waste-page .dark-button,
+.report-waste-page .light-button {
+  border: none;
+  border-radius: 13px;
+  padding: 13px 18px;
+  font-weight: 800;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.report-waste-page .dark-button {
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #17231e 0%,
+      #263c33 55%,
+      #087f8d 100%
+    );
+
+  box-shadow:
+    0 10px 20px rgba(23, 35, 30, 0.18),
+    inset 0 1px rgba(255, 255, 255, 0.16);
+}
+
+.report-waste-page .light-button {
+  color: #087f8d;
+
+  border: 1px solid rgba(32, 184, 199, 0.22);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(32, 184, 199, 0.08)
+    );
+
+  box-shadow:
+    0 7px 15px rgba(32, 184, 199, 0.08);
+}
+
+.report-waste-page .dark-button:hover,
+.report-waste-page .light-button:hover {
+  transform:
+    translateY(-3px)
+    perspective(500px)
+    translateZ(5px);
+}
+
+.report-waste-page .dark-button:active,
+.report-waste-page .light-button:active {
+  transform: translateY(1px);
+}
+
+.report-submit-button {
+  width: 100%;
+  margin-top: 4px;
+  padding: 16px 20px !important;
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   INFORMATION PANEL
+   ========================================================= */
+
+.report-info-panel {
+  padding: 28px;
+}
+
+.report-info-panel::before {
+  background: linear-gradient(
+    90deg,
+    var(--rw-cyan),
+    var(--rw-blue)
+  );
+}
+
+.report-info-panel h2 {
+  margin: 8px 0 26px;
+  font-size: 1.4rem;
+  letter-spacing: -0.025em;
+}
+
+
+/* =========================================================
+   PROCESS
+   ========================================================= */
+
+.report-process {
+  display: flex;
+  flex-direction: column;
+}
+
+.report-process > div {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 14px;
+
+  position: relative;
+  padding-bottom: 25px;
+}
+
+.report-process > div:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+  left: 23px;
+  top: 45px;
+  width: 2px;
+  height: calc(100% - 27px);
+
+  background:
+    linear-gradient(
+      to bottom,
+      var(--rw-cyan),
+      rgba(118, 103, 232, 0.18)
+    );
+}
+
+.report-process > div > span {
+  width: 46px;
+  height: 46px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 900;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--rw-cyan),
+      var(--rw-blue)
+    );
+
+  box-shadow:
+    0 10px 18px rgba(32, 184, 199, 0.2),
+    inset 0 1px rgba(255, 255, 255, 0.3);
+
+  transform: perspective(500px) translateZ(8px);
+}
+
+.report-process > div:nth-child(2) > span {
+  background:
+    linear-gradient(
+      135deg,
+      var(--rw-violet),
+      #9a70e9
+    );
+}
+
+.report-process > div:nth-child(3) > span {
+  background:
+    linear-gradient(
+      135deg,
+      var(--rw-green),
+      #56c987
+    );
+}
+
+.report-process strong {
+  display: block;
+  margin: 3px 0 6px;
+  font-size: 0.76rem;
+  letter-spacing: 0.07em;
+}
+
+.report-process p {
+  margin: 0;
+  color: var(--rw-muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   REPORTING GUIDANCE
+   ========================================================= */
+
+.report-guidance {
+  margin-top: 20px;
+  padding: 24px;
+
+  border: 1px solid rgba(255, 159, 67, 0.2);
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 159, 67, 0.12),
+      rgba(255, 107, 95, 0.07)
+    );
+
+  box-shadow:
+    0 15px 28px rgba(255, 159, 67, 0.08),
+    inset 0 1px rgba(255, 255, 255, 0.8);
+
+  transform: perspective(1000px) translateZ(2px);
+}
+
+.report-guidance .eyebrow {
+  color: var(--rw-orange);
+}
+
+.report-guidance h3 {
+  margin: 8px 0 17px;
+  font-size: 1.05rem;
+}
+
+.report-guidance ul {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.report-guidance li {
+  position: relative;
+  padding-left: 20px;
+
+  color: #536059;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.report-guidance li::before {
+  content: "✓";
+
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  color: var(--rw-orange);
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   DISCLAIMER
+   ========================================================= */
+
+.report-disclaimer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 15px;
+  align-items: start;
+
+  margin-top: 26px;
+  padding: 20px 22px;
+
+  border: 1px solid rgba(118, 103, 232, 0.2);
+  border-radius: 19px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(118, 103, 232, 0.08),
+      rgba(32, 184, 199, 0.06)
+    );
+
+  box-shadow:
+    0 12px 25px rgba(118, 103, 232, 0.06),
+    inset 0 1px rgba(255, 255, 255, 0.85);
+}
+
+.report-disclaimer::before {
+  content: "!";
+  width: 32px;
+  height: 32px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  color: white;
+  font-weight: 900;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--rw-violet),
+      var(--rw-cyan)
+    );
+
+  box-shadow:
+    0 7px 15px rgba(118, 103, 232, 0.18);
+}
+
+.report-disclaimer strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #5045ad;
+}
+
+.report-disclaimer p {
+  margin: 0;
+  color: var(--rw-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   SUCCESS STATE
+   ========================================================= */
+
+.report-success {
+  position: relative;
+
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 50px 44px;
+
+  text-align: center;
+
+  border: 1px solid rgba(45, 168, 111, 0.16);
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(45, 168, 111, 0.05)
+    );
+
+  box-shadow:
+    0 28px 65px rgba(23, 35, 30, 0.11),
+    0 8px 20px rgba(45, 168, 111, 0.08),
+    inset 0 1px rgba(255, 255, 255, 1);
+
+  transform: perspective(1200px) translateZ(0);
+}
+
+.report-success::before {
+  content: "";
+
+  position: absolute;
+  inset: 0 15% auto;
+
+  height: 5px;
+
+  border-radius: 0 0 10px 10px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--rw-green),
+      var(--rw-cyan),
+      var(--rw-violet)
+    );
+}
+
+.report-success-icon {
+  width: 78px;
+  height: 78px;
+
+  display: grid;
+  place-items: center;
+
+  margin: 0 auto 22px;
+
+  border-radius: 24px;
+
+  color: white;
+  font-size: 2rem;
+  font-weight: 900;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--rw-green),
+      var(--rw-cyan)
+    );
+
+  box-shadow:
+    0 18px 30px rgba(45, 168, 111, 0.22),
+    inset 0 1px rgba(255, 255, 255, 0.35);
+
+  transform:
+    perspective(500px)
+    translateZ(18px)
+    rotateX(4deg);
+}
+
+.report-success h1 {
+  margin: 10px 0 15px;
+
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  letter-spacing: -0.045em;
+}
+
+.report-success > p {
+  max-width: 680px;
+  margin: 0 auto;
+
+  color: var(--rw-muted);
+  line-height: 1.7;
+}
+
+.report-success > p strong {
+  color: #087f8d;
+}
+
+
+/* =========================================================
+   SUCCESS FLOW
+   ========================================================= */
+
+.report-status-flow {
+  display: grid;
+  grid-template-columns: 1fr 70px 1fr 70px 1fr;
+  align-items: center;
+
+  margin: 38px 0;
+}
+
+.report-flow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  opacity: 0.55;
+}
+
+.report-flow-step.active {
+  opacity: 1;
+}
+
+.report-flow-step span {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 15px;
+
+  background: #edf1ef;
+  color: #66726c;
+
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.report-flow-step.active span {
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--rw-green),
+      var(--rw-cyan)
+    );
+
+  box-shadow:
+    0 9px 18px rgba(45, 168, 111, 0.2);
+}
+
+.report-flow-step strong {
+  font-size: 0.78rem;
+}
+
+.report-flow-step small {
+  color: var(--rw-muted);
+  font-size: 0.68rem;
+}
+
+.report-flow-line {
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(45, 168, 111, 0.45),
+      rgba(118, 103, 232, 0.18)
+    );
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .report-waste-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-info-panel {
+    order: 1;
+  }
+
+  .report-form-panel {
+    order: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .report-waste-page .page-header {
+    flex-direction: column;
+  }
+
+  .report-form-panel,
+  .report-info-panel {
+    padding: 22px;
+  }
+
+  .report-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .report-evidence-box {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .report-evidence-box .light-button {
+    width: 100%;
+  }
+
+  .report-status-flow {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .report-flow-line {
+    width: 2px;
+    height: 25px;
+    margin: 0 auto;
+  }
+
+  .report-success {
+    margin: 20px auto;
+    padding: 38px 22px;
+  }
+
+  .report-disclaimer {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .report-waste-page .panel,
+  .report-waste-page .dark-button,
+  .report-waste-page .light-button,
+  .report-waste-form input,
+  .report-waste-form select,
+  .report-waste-form textarea {
+    transition: none;
+    transform: none;
+  }
+}

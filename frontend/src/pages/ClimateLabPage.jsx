@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import "../styles/climate/climate.css";
 
 const scenarios = [
   {

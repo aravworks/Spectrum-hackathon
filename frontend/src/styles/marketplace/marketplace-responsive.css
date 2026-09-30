@@ -1,0 +1,109 @@
+/* =========================================================
+   GLOBAL MARKETPLACE RESPONSIVE RULES
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .marketplace-page > section {
+    width: min(100% - 36px, 1100px);
+  }
+
+  .marketplace-hero-stats {
+    right: 30px;
+  }
+}
+
+
+@media (max-width: 900px) {
+  .marketplace-page > section {
+    width: calc(100% - 32px);
+  }
+
+  .marketplace-hero-stats {
+    right: 30px;
+  }
+}
+
+
+@media (max-width: 760px) {
+  .marketplace-page > section {
+    width: calc(100% - 28px);
+  }
+
+  .marketplace-hero {
+    padding: 34px 28px;
+  }
+
+  .marketplace-hero-stats {
+    position: static;
+  }
+
+  .marketplace-content-header {
+    margin-top: 30px;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .marketplace-page > section {
+    width: calc(100% - 24px);
+  }
+
+  .marketplace-page {
+    padding-bottom: 40px;
+  }
+
+  .marketplace-hero {
+    border-radius: 17px;
+  }
+
+  .marketplace-search-panel {
+    margin-top: 12px;
+  }
+
+  .marketplace-category-list {
+    scrollbar-width: none;
+  }
+
+  .marketplace-category-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .marketplace-content-header h2 {
+    font-size: 21px;
+  }
+}
+
+
+@media (max-width: 420px) {
+  .marketplace-page > section {
+    width: calc(100% - 18px);
+  }
+
+  .marketplace-hero {
+    padding: 25px 19px;
+  }
+
+  .marketplace-hero h1 {
+    font-size: 31px;
+  }
+
+  .marketplace-hero p {
+    font-size: 11px;
+  }
+
+  .marketplace-hero-stats {
+    gap: 5px;
+  }
+
+  .marketplace-hero-stats > div {
+    padding: 9px 6px;
+  }
+
+  .marketplace-hero-stats span {
+    font-size: 6px;
+  }
+
+  .marketplace-hero-stats strong {
+    font-size: 13px;
+  }
+}

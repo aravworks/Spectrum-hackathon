@@ -1,0 +1,50 @@
+/* =========================================================
+   TRACEABILITY ENHANCEMENTS
+   ========================================================= */
+
+.marketplace-trace-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.marketplace-trace-section::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  right: -70px;
+  width: 230px;
+  height: 230px;
+  border: 1px solid rgba(74, 108, 82, 0.1);
+  border-radius: 50%;
+}
+
+.marketplace-trace-copy,
+.marketplace-trace-cards {
+  position: relative;
+  z-index: 1;
+}
+
+.marketplace-trace-cards > div:not(.trace-arrow) {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.marketplace-trace-cards > div:not(.trace-arrow):hover {
+  transform: translateY(-3px);
+  border-color: #bfd0c2;
+  box-shadow: 0 9px 22px rgba(44, 67, 50, 0.07);
+}
+
+.marketplace-trace-cards > div:nth-child(1) {
+  background: #ffffff;
+}
+
+.marketplace-trace-cards > div:nth-child(3) {
+  background: #f8fbf8;
+}
+
+.marketplace-trace-cards > div:nth-child(5) {
+  background: #f3f8f4;
+}

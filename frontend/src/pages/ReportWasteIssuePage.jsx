@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import "../styles/report-waste/report-waste.css";
 function ReportWasteIssuePage() {
   const [form, setForm] = useState({
     category: "",

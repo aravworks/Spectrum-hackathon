@@ -1,3 +1,4 @@
+import "../styles/community-reports/community-reports.css";
 function CommunityReportsPage() {
   return (
     <div className="page-container">

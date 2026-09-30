@@ -1,0 +1,164 @@
+/* =========================================================
+   DATA TABLE
+   ========================================================= */
+
+.research-table-wrapper {
+  width: 100%;
+  margin-top: 18px;
+  overflow-x: auto;
+  border: 1px solid #e1e8e2;
+  border-radius: 12px;
+}
+
+.research-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.research-table th {
+  padding: 12px 13px;
+  border-bottom: 1px solid #dfe7e0;
+  background: #f7f9f7;
+  color: #87928b;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.research-table td {
+  padding: 13px;
+  border-bottom: 1px solid #edf1ed;
+  color: #647168;
+  font-size: 9px;
+  vertical-align: middle;
+}
+
+.research-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.research-table tbody tr:hover {
+  background: #f8fbf8;
+}
+
+.research-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+
+/* =========================================================
+   DATASET NAME
+   ========================================================= */
+
+.dataset-name {
+  min-width: 180px;
+}
+
+.dataset-name strong {
+  display: block;
+  color: #35483b;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.dataset-name span {
+  display: block;
+  margin-top: 4px;
+  color: #a0aaa3;
+  font-size: 7px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   VALUE
+   ========================================================= */
+
+.research-table td:nth-child(5) {
+  white-space: nowrap;
+}
+
+.research-table td:nth-child(5) strong {
+  color: #304b38;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   CONFIDENCE BADGES
+   ========================================================= */
+
+.confidence-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  padding: 0 7px;
+  border-radius: 5px;
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.confidence-badge.external {
+  border: 1px solid #cfe0d2;
+  background: #edf6ef;
+  color: #52705a;
+}
+
+.confidence-badge.company-reported {
+  border: 1px solid #e0d8bd;
+  background: #f7f3e5;
+  color: #7b6d43;
+}
+
+.confidence-badge.modelled {
+  border: 1px solid #ccdbe6;
+  background: #eef5f9;
+  color: #547087;
+}
+
+.confidence-badge.unavailable {
+  border: 1px solid #dce0de;
+  background: #f2f4f3;
+  color: #7b8580;
+}
+
+
+/* =========================================================
+   SOURCE
+   ========================================================= */
+
+.research-table td:nth-child(7) {
+  max-width: 150px;
+  color: #87928b;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   VIEW BUTTON
+   ========================================================= */
+
+.dataset-view-button {
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid #d5e0d7;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #506458;
+  font-size: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dataset-view-button:hover {
+  border-color: #aebfb2;
+  background: #f0f6f1;
+}
