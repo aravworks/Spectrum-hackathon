@@ -1,47 +1,55 @@
-import os
 from typing import List
+from openai import OpenAI
 from app.schemas.chatbot import ChatMessage, ChatResponse
+from app.core.config import settings
 
-# TODO (Teammate): To use OpenAI, uncomment these:
-# import openai
-# openai.api_key = os.getenv("OPENAI_API_KEY")
+# Initialize OpenAI client if key is provided
+client = OpenAI(api_key=settings.OPENAI_API_KEY) if settings.OPENAI_API_KEY else None
 
 class ChatbotService:
     
     @staticmethod
     def ask_ai(messages: List[ChatMessage]) -> ChatResponse:
         """
-        Sends the conversation history to the LLM and returns the response.
+        Sends the conversation history to OpenAI GPT-4.
+        Falls back to a mock response if no API key is configured.
         """
         
         # -------------------------------------------------------------------
-        # REAL IMPLEMENTATION EXAMPLE (OpenAI)
+        # REAL IMPLEMENTATION (OpenAI API)
         # -------------------------------------------------------------------
-        """
-        formatted_messages = [{"role": m.role.value, "content": m.content} for m in messages]
-        
-        # Inject system prompt if not present
-        if not any(m["role"] == "system" for m in formatted_messages):
-            formatted_messages.insert(0, {
-                "role": "system", 
-                "content": "You are the EcoVerse AI. A helpful assistant for a waste management and recycling platform. Give concise, eco-friendly advice."
-            })
+        if client:
+            formatted_messages = [{"role": m.role.value, "content": m.content} for m in messages]
             
-        response = openai.ChatCompletion.create(
-            model="gpt-4-turbo",
-            messages=formatted_messages,
-            temperature=0.7
-        )
-        
-        return ChatResponse(
-            reply=response.choices[0].message["content"],
-            tokens_used=response.usage.total_tokens,
-            model_used="gpt-4-turbo"
-        )
-        """
+            # Inject system prompt if not present
+            if not any(m["role"] == "system" for m in formatted_messages):
+                formatted_messages.insert(0, {
+                    "role": "system", 
+                    "content": "You are the EcoVerse AI. A helpful assistant for a waste management and recycling platform. Keep your advice concise, highly accurate, and focused on sustainability."
+                })
+                
+            try:
+                response = client.chat.completions.create(
+                    model="gpt-4-turbo",
+                    messages=formatted_messages,
+                    temperature=0.7
+                )
+                
+                return ChatResponse(
+                    reply=response.choices[0].message.content,
+                    tokens_used=response.usage.total_tokens,
+                    model_used="gpt-4-turbo"
+                )
+            except Exception as e:
+                # If the API call fails, return the error gracefully
+                return ChatResponse(
+                    reply=f"AI Error: {str(e)}",
+                    tokens_used=0,
+                    model_used="error"
+                )
 
         # -------------------------------------------------------------------
-        # MOCK IMPLEMENTATION (Used until API keys are added)
+        # MOCK IMPLEMENTATION (Fallback)
         # -------------------------------------------------------------------
         last_message = messages[-1].content.lower()
         

@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, Optional
 from pydantic_settings import BaseSettings
 from pydantic import AnyHttpUrl, validator
 
@@ -17,9 +17,13 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
-    # Database Settings (Placeholder for teammate)
+    # Database Settings
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/waste"
+    SUPABASE_URL: Optional[str] = None
     
+    # AI Config
+    OPENAI_API_KEY: Optional[str] = None
+
     # JWT Auth
     SECRET_KEY: str = "CHANGE_ME_IN_PRODUCTION_TO_A_SECURE_KEY"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8 days
