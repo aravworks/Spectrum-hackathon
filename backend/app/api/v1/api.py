@@ -29,3 +29,7 @@ api_router.include_router(environmental.router, prefix="/environmental", tags=["
 # Include the GIS & Satellite Router
 from app.api.v1.endpoints import gis
 api_router.include_router(gis.router, prefix="/gis", tags=["gis"])
+
+# Include the Marketplace & Traceability Router
+from app.api.v1.endpoints import marketplace
+api_router.include_router(marketplace.router, prefix="/marketplace", tags=["marketplace"])
