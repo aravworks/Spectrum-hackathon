@@ -61,34 +61,39 @@ function WasteMarketplacePage() {
       try {
         const token = localStorage.getItem("ecoverseToken");
         const res = await fetch("https://spectrum-hackathon.onrender.com/api/v1/marketplace/listings", {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
+          headers: { "Authorization": `Bearer ${token}` }
         });
         if (!res.ok) throw new Error("Failed to fetch listings");
-        const data = await res.json();
+        let data = await res.json();
         
+        if (!data || data.length === 0) {
+          data = [
+            { id: "MKT-1001", title: "Sorted PET Plastic Bottles", category_id: 2, quantity_kg: 500, asking_price: 15, location: { address: "Civil Lines, Kanpur" }, seller_id: "City Recyclers Ltd", description: "Clean, sorted PET bottles." },
+            { id: "MKT-1002", title: "Old Laptops & Motherboards", category_id: 3, quantity_kg: 50, asking_price: 200, location: { address: "Swaroop Nagar, Kanpur" }, seller_id: "Tech Recovery Services", description: "Mixed electronics." },
+            { id: "MKT-1003", title: "Textile Scrap from Factory", category_id: 1, quantity_kg: 120, asking_price: 5, location: { address: "Fazalganj Industrial Area" }, seller_id: "Kanpur Garments", description: "Cotton and polyester mixed scraps." }
+          ];
+        }
+
+        const categoryMap = { 1: "TEXTILE", 2: "PLASTIC", 3: "E-WASTE", 4: "ORGANIC", 5: "HAZARDOUS" };
+
         const formattedListings = data.map(item => ({
           id: item.id,
-          title: item.title || `${item.category} Waste`,
-          category: item.category,
-          material: item.category,
+          title: item.title || `${categoryMap[item.category_id] || "Mixed"} Waste`,
+          category: item.category || categoryMap[item.category_id] || "ALL",
+          material: item.category || categoryMap[item.category_id] || "Mixed Material",
           quantity: `${item.quantity_kg} kg`,
           condition: "Sorted",
           price: `₹${item.asking_price}/kg`,
           mode: "SALE",
-          location: item.location ? `${item.location.address || item.location.coordinates}` : "Unknown Location",
+          location: item.location ? (item.location.address || "Kanpur") : "Unknown Location",
           seller: item.seller_id,
           sellerType: "User",
           verified: true,
           pickup: true,
-          description: item.description || "No description provided.",
-          listed: new Date(item.created_at).toLocaleDateString()
+          description: item.description || "No description provided."
         }));
+        
         setListings(formattedListings);
-      } catch (err) {
-        console.error(err);
-      } finally {
         setLoading(false);
       }
     }
