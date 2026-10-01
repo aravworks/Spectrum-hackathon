@@ -4,43 +4,67 @@ import "../styles/complaint-tracking/complaint-tracking.css";
 function ComplaintTrackingPage() {
   const [complaintId, setComplaintId] = useState("");
   const [complaint, setComplaint] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
-  const sampleComplaints = {
-    "CMP-2026-1042": {
-      id: "CMP-2026-1042",
-      type: "Missed Pickup",
-      category: "Plastic / Packaging",
-      location: "Civil Lines, Kanpur",
-      submitted: "30 Sep 2026",
-      description:
-        "Scheduled waste pickup was not completed at the requested location.",
-      status: "UNDER REVIEW",
-      priority: "MEDIUM",
-      assignedTo: "GreenRoute Operations",
-      updated: "30 Sep 2026, 09:42 AM",
-    },
-
-    "CMP-2026-1043": {
-      id: "CMP-2026-1043",
-      type: "Damaged Material",
-      category: "Electronics / E-waste",
-      location: "Swaroop Nagar, Kanpur",
-      submitted: "29 Sep 2026",
-      description:
-        "Material was collected but the quantity recorded at pickup appears different from the submitted request.",
-      status: "RESOLVED",
-      priority: "LOW",
-      assignedTo: "Recovery Operations",
-      updated: "30 Sep 2026, 08:15 AM",
-    },
-  };
-
-  const handleTrack = (e) => {
+  const handleTrack = async (e) => {
     e.preventDefault();
+    if (!complaintId.trim()) return;
 
-    const id = complaintId.trim().toUpperCase();
+    setLoading(true);
+    setNotFound(false);
+    setComplaint(null);
+    const searchId = complaintId.trim().toLowerCase();
 
-    setComplaint(sampleComplaints[id] || null);
+    try {
+      const token = localStorage.getItem("ecoverseToken");
+      
+      // Fetch user's reports
+      const reportsRes = await fetch("https://spectrum-hackathon.onrender.com/api/v1/reports", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const reports = await reportsRes.json();
+      
+      // Fetch user's pickups
+      const pickupsRes = await fetch("https://spectrum-hackathon.onrender.com/api/v1/pickups", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const pickups = await pickupsRes.json();
+      
+      const allItems = [...(Array.isArray(reports) ? reports : []), ...(Array.isArray(pickups) ? pickups : [])];
+      
+      const item = allItems.find(x => x.id.toLowerCase().startsWith(searchId) || x.id.toLowerCase() === searchId);
+      
+      if (item) {
+        const isReport = !!item.severity;
+        
+        let statusString = "UNDER REVIEW";
+        if (item.state === "COMPLETED" || item.state === "RESOLVED") statusString = "RESOLVED";
+        else if (item.state === "ASSIGNED") statusString = "UNDER REVIEW";
+        else if (item.state === "PENDING" || item.state === "SUBMITTED") statusString = "SUBMITTED";
+        else statusString = item.state || "UNDER REVIEW";
+
+        setComplaint({
+          id: item.id,
+          type: isReport ? "Waste Report" : "Pickup Request",
+          category: item.category,
+          location: "Kanpur (GPS Logged)",
+          submitted: new Date(item.created_at).toLocaleDateString(),
+          description: item.description || item.notes || "No description provided.",
+          status: statusString,
+          priority: item.severity || "MEDIUM",
+          assignedTo: isReport ? "City Admin" : "Collection Operator",
+          updated: new Date(item.updated_at || item.created_at).toLocaleDateString(),
+        });
+      } else {
+        setNotFound(true);
+      }
+    } catch (err) {
+      console.error("Error fetching record:", err);
+      setNotFound(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -80,7 +104,7 @@ function ComplaintTrackingPage() {
         </h2>
 
         <p>
-          Example: CMP-2026-1042
+          Example: UUID (e.g., 5f4d...)
         </p>
 
         <form
@@ -90,18 +114,15 @@ function ComplaintTrackingPage() {
 
           <input
             type="text"
-            placeholder="CMP-2026-1042"
+            placeholder="Paste ID here"
             value={complaintId}
             onChange={(e) =>
               setComplaintId(e.target.value)
             }
           />
 
-          <button
-            type="submit"
-            className="dark-button"
-          >
-            Track Complaint →
+          <button type="submit" className="dark-button" disabled={loading}>
+            {loading ? "Searching..." : "Track Record ->"}
           </button>
 
         </form>
@@ -308,7 +329,7 @@ function ComplaintTrackingPage() {
       )}
 
       {/* NO RESULT */}
-      {complaintId && !complaint && (
+      {notFound && (
         <section className="panel complaint-not-found">
 
           <div className="complaint-not-found-icon">
@@ -325,8 +346,7 @@ function ComplaintTrackingPage() {
           </p>
 
           <small>
-            Try CMP-2026-1042 or CMP-2026-1043 for the
-            demo records.
+            Please provide a valid ID from your recent pickup requests or waste reports.
           </small>
 
         </section>
