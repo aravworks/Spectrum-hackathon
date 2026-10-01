@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../styles/report-waste/report-waste.css";
 function ReportWasteIssuePage() {
+  const [photo, setPhoto] = useState(null);
   const [form, setForm] = useState({
     category: "",
     location: "",
@@ -332,17 +333,28 @@ ${form.description}`,
                 </p>
               </div>
 
-              <button
-                type="button"
-                className="light-button"
-                onClick={() =>
-                  alert(
-                    "Photo upload will be connected to the backend."
-                  )
-                }
-              >
-                Add Photo
-              </button>
+                <input 
+                  type="file" 
+                  id="photo-upload" 
+                  style={{ display: "none" }} 
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setPhoto(e.target.files[0]);
+                    }
+                  }}
+                />
+                
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "5px" }}>
+                  <button
+                    type="button"
+                    className="light-button"
+                    onClick={() => document.getElementById('photo-upload').click()}
+                  >
+                    {photo ? "Change Photo" : "Add Photo"}
+                  </button>
+                  {photo && <span style={{ fontSize: "12px", color: "#064b3a", fontWeight: "600" }}>{photo.name}</span>}
+                </div>
 
             </div>
 
