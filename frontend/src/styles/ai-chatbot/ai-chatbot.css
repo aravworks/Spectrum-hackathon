@@ -1310,7 +1310,7 @@
   flex-shrink: 0 !important;
 }
 
-.page-header, .ai-principles {
+.ai-chatbot-page .page-header, .ai-chatbot-page .ai-principles {
   display: none !important;
 }
 
