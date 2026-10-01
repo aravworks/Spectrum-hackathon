@@ -1255,77 +1255,70 @@
   }
 }
 
+
 /* =========================================================
-   SAFE FIXES FOR HACKATHON
+   USER REQUESTED GREEN BORDER AND SAFE LAYOUT
    ========================================================= */
 
-/* Hide the marketing header that was overlapping the nav */
-.page-header {
-  display: none !important;
-}
-.ai-principles {
-  display: none !important;
-}
-
-/* Ensure the page wrapper doesn't collapse */
 .ai-chatbot-page {
+  /* The green border requested by user */
+  border: 6px solid #1c4b36 !important;
+  border-radius: 20px !important;
+  
+  /* Bulletproof spacing to prevent top nav overlap */
+  margin: 100px 20px 20px 20px !important;
+  padding: 24px !important;
+  
+  /* Let it expand safely */
   min-height: 700px !important;
-  margin-top: 100px !important;
+  height: auto !important;
+  
+  background: white !important;
+  
+  display: block !important;
+  overflow: visible !important;
 }
 
-/* Ensure the chat layout has a solid minimum height */
 .ai-chat-layout {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1.7fr) minmax(290px, 0.8fr) !important;
-  gap: 24px !important;
+  display: flex !important;
+  flex-direction: row !important;
   min-height: 650px !important;
+  gap: 24px !important;
 }
 
-/* Ensure the chat panel itself takes up space */
 .ai-chat-panel {
-  min-height: 650px !important;
+  flex: 1 !important;
   display: flex !important;
   flex-direction: column !important;
+  min-height: 650px !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
 }
 
-/* Ensure the message area expands correctly */
+.ai-chat-sidebar {
+  width: 320px !important;
+  flex-shrink: 0 !important;
+}
+
 .ai-message-area {
-  flex: 1 1 auto !important;
+  flex: 1 !important;
   min-height: 400px !important;
-  max-height: 600px !important;
   overflow-y: auto !important;
 }
 
-.ai-input-area {
+.ai-chat-topbar, .ai-input-area {
   flex-shrink: 0 !important;
+}
+
+.page-header, .ai-principles {
+  display: none !important;
 }
 
 @media (max-width: 1100px) {
   .ai-chat-layout {
-    grid-template-columns: 1fr !important;
+    flex-direction: column !important;
   }
-}
-
-/* =========================================================
-   FLEX-SHRINK FIXES FOR BEAUTIFICATION
-   ========================================================= */
-
-/* Prevent the topbar and input from being pushed out of the panel or squished */
-.ai-chat-topbar {
-  flex-shrink: 0 !important;
-}
-.ai-input-area {
-  flex-shrink: 0 !important;
-}
-
-/* Ensure the message area shrinks/scrolls instead of pushing the topbar out */
-.ai-message-area {
-  flex-shrink: 1 !important;
-  flex-grow: 1 !important;
-  overflow-y: auto !important;
-}
-
-/* Add a bit more breathing room at the top to perfectly clear the sticky nav */
-.ai-chatbot-page {
-  margin-top: 40px !important;
+  .ai-chat-sidebar {
+    width: 100% !important;
+  }
 }
