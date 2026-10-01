@@ -1305,3 +1305,27 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+/* =========================================================
+   FLEX-SHRINK FIXES FOR BEAUTIFICATION
+   ========================================================= */
+
+/* Prevent the topbar and input from being pushed out of the panel or squished */
+.ai-chat-topbar {
+  flex-shrink: 0 !important;
+}
+.ai-input-area {
+  flex-shrink: 0 !important;
+}
+
+/* Ensure the message area shrinks/scrolls instead of pushing the topbar out */
+.ai-message-area {
+  flex-shrink: 1 !important;
+  flex-grow: 1 !important;
+  overflow-y: auto !important;
+}
+
+/* Add a bit more breathing room at the top to perfectly clear the sticky nav */
+.ai-chatbot-page {
+  margin-top: 40px !important;
+}
