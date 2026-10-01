@@ -10,7 +10,44 @@ function WasteMarketplacePage() {
 
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [newListing, setNewListing] = useState({ category_id: "1", quantity_kg: "", asking_price: "", location: "" });
+  const [submitting, setSubmitting] = useState(false);
   
+  const handleCreateListing = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const token = localStorage.getItem("ecoverseToken");
+      const res = await fetch("https://spectrum-hackathon.onrender.com/api/v1/marketplace/listings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          category_id: parseInt(newListing.category_id),
+          quantity_kg: parseFloat(newListing.quantity_kg),
+          asking_price: parseFloat(newListing.asking_price),
+          location: { lat: 26.4499, lng: 80.3319 }
+        })
+      });
+      if (!res.ok) throw new Error("Failed to create listing");
+      
+      const created = await res.json();
+      setListings([created, ...listings]);
+      setShowModal(false);
+      setNewListing({ category_id: "1", quantity_kg: "", asking_price: "", location: "" });
+      alert("Listing created successfully!");
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // fetchListings is handled in useEffect
+
   useEffect(() => {
     async function fetchListings() {
       try {
@@ -155,11 +192,7 @@ function WasteMarketplacePage() {
             <button
               type="button"
               className="light-button"
-              onClick={() =>
-                alert(
-                  "Create Listing will be connected to the backend."
-                )
-              }
+              onClick={() => setShowModal(true)}
             >
               + List Material
             </button>
@@ -768,6 +801,67 @@ function WasteMarketplacePage() {
 
       )}
 
+      {showModal && (
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div style={{ background: "white", padding: "30px", borderRadius: "12px", width: "400px", maxWidth: "90%" }}>
+            <h2 style={{ marginTop: 0, marginBottom: "20px" }}>Create New Listing</h2>
+            <form onSubmit={handleCreateListing} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+              <label style={{ display: "flex", flexDirection: "column", gap: "5px", fontSize: "14px", fontWeight: "600" }}>
+                Material Category
+                <select 
+                  value={newListing.category_id} 
+                  onChange={e => setNewListing({...newListing, category_id: e.target.value})}
+                  style={{ padding: "10px", borderRadius: "6px", border: "1px solid #ccc" }}
+                >
+                  <option value="1">Textile / Fashion</option>
+                  <option value="2">Plastic / Packaging</option>
+                  <option value="3">Electronics / E-waste</option>
+                  <option value="4">Organic / Food</option>
+                  <option value="5">Hazardous / Batteries</option>
+                </select>
+              </label>
+              
+              <label style={{ display: "flex", flexDirection: "column", gap: "5px", fontSize: "14px", fontWeight: "600" }}>
+                Quantity (kg)
+                <input 
+                  type="number" min="0.1" step="0.1" required
+                  value={newListing.quantity_kg}
+                  onChange={e => setNewListing({...newListing, quantity_kg: e.target.value})}
+                  style={{ padding: "10px", borderRadius: "6px", border: "1px solid #ccc" }}
+                />
+              </label>
+
+              <label style={{ display: "flex", flexDirection: "column", gap: "5px", fontSize: "14px", fontWeight: "600" }}>
+                Asking Price (₹)
+                <input 
+                  type="number" min="0" step="1" required
+                  value={newListing.asking_price}
+                  onChange={e => setNewListing({...newListing, asking_price: e.target.value})}
+                  style={{ padding: "10px", borderRadius: "6px", border: "1px solid #ccc" }}
+                />
+              </label>
+
+              <label style={{ display: "flex", flexDirection: "column", gap: "5px", fontSize: "14px", fontWeight: "600" }}>
+                Location Area
+                <input 
+                  type="text" required
+                  placeholder="e.g. Civil Lines, Kanpur"
+                  value={newListing.location}
+                  onChange={e => setNewListing({...newListing, location: e.target.value})}
+                  style={{ padding: "10px", borderRadius: "6px", border: "1px solid #ccc" }}
+                />
+              </label>
+
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "10px" }}>
+                <button type="button" onClick={() => setShowModal(false)} style={{ padding: "10px 15px", border: "none", background: "#f0f0f0", borderRadius: "6px", cursor: "pointer" }}>Cancel</button>
+                <button type="submit" disabled={submitting} style={{ padding: "10px 15px", border: "none", background: "#064b3a", color: "white", borderRadius: "6px", cursor: "pointer" }}>
+                  {submitting ? "Posting..." : "Post Material"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
