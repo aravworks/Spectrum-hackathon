@@ -16,7 +16,7 @@ router = APIRouter()
 def create_listing(
     *,
     listing_in: MarketplaceListingCreate,
-    current_user: UserResponse = Depends(deps.RoleChecker([UserRole.COLLECTOR, UserRole.RECYCLER, UserRole.CITY_ADMIN]))
+    current_user: UserResponse = Depends(deps.RoleChecker([UserRole.COLLECTOR, UserRole.RECYCLER, UserRole.CITY_ADMIN, UserRole.CONSUMER]))
 ) -> Any:
     """
     Create a new B2B marketplace listing (e.g., selling 500kg of sorted PET plastic).
