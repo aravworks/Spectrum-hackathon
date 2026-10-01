@@ -12,7 +12,7 @@ from app.services.marketplace_service import MarketplaceService
 router = APIRouter()
 
 # --- Listings ---
-@router.post("/listings", response_model=MarketplaceListingResponse, status_code=201)
+@router.post("/listings", status_code=201)
 def create_listing(
     *,
     listing_in: MarketplaceListingCreate,
@@ -24,7 +24,7 @@ def create_listing(
     """
     return MarketplaceService.create_listing(seller_id=current_user.id, data=listing_in)
 
-@router.get("/listings", response_model=List[MarketplaceListingResponse])
+@router.get("/listings")
 def get_listings(
     status: Optional[ListingStatus] = ListingStatus.AVAILABLE,
     skip: int = 0,
@@ -36,7 +36,7 @@ def get_listings(
     """
     return MarketplaceService.get_listings(status=status, skip=skip, limit=limit)
 
-@router.get("/listings/{listing_id}", response_model=MarketplaceListingResponse)
+@router.get("/listings/{listing_id}")
 def get_listing(
     listing_id: str,
     current_user: UserResponse = Depends(deps.get_current_active_user)
@@ -48,7 +48,7 @@ def get_listing(
     return listing
 
 # --- Offers ---
-@router.post("/listings/{listing_id}/offers", response_model=MarketplaceOfferResponse, status_code=201)
+@router.post("/listings/{listing_id}/offers", status_code=201)
 def place_offer(
     *,
     listing_id: str,
