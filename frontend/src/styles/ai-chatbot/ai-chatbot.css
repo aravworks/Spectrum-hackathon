@@ -1270,7 +1270,7 @@
 /* Ensure the page wrapper doesn't collapse */
 .ai-chatbot-page {
   min-height: 700px !important;
-  margin-top: 20px !important;
+  margin-top: 100px !important;
 }
 
 /* Ensure the chat layout has a solid minimum height */
