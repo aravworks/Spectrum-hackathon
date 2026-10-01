@@ -193,6 +193,24 @@ export default function RouteOptimizationPage() {
         <section className="panel" style={{ padding: 20 }}>
           <div className="eyebrow" style={{ marginBottom: 12 }}>SELECT PICKUPS</div>
           <h2 style={{ fontSize: 18, marginBottom: 16 }}>Pending Requests</h2>
+          
+          <form onSubmit={handleSearchAndAdd} style={{ display: "flex", gap: 8, marginBottom: 20 }}>
+            <input 
+              type="text" 
+              placeholder="Search location..." 
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              style={{ flex: 1, padding: "8px 12px", borderRadius: 8, border: "1px solid #ccc", fontSize: 13 }}
+            />
+            <button 
+              type="submit" 
+              disabled={searching}
+              style={{ padding: "8px 16px", background: "#1a3a28", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, cursor: "pointer" }}
+            >
+              {searching ? "..." : "Add"}
+            </button>
+          </form>
+
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {allAvailablePickups.map(p => {
               const sel = selectedIds.includes(p.id);
