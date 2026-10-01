@@ -153,6 +153,49 @@ function WasteMarketplacePage() {
     listingMode,
   ]);
 
+  const handleMakeOffer = async () => {
+    if (!selectedListing) return;
+    
+    const match = selectedListing.price.match(/\d+(\.\d+)?/);
+    const defaultPrice = match ? match[0] : "10";
+    
+    const offerInput = prompt("Enter your offer price per kg (₹):", defaultPrice);
+    if (!offerInput) return; // User cancelled
+    
+    const offered_price = parseFloat(offerInput);
+    if (isNaN(offered_price) || offered_price <= 0) {
+      alert("Please enter a valid price.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("ecoverseToken");
+      const res = await fetch(`https://spectrum-hackathon.onrender.com/api/v1/marketplace/listings/${selectedListing.id}/offers`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ offered_price })
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        let errMsg = "Failed to place offer";
+        if (err.detail) {
+          if (typeof err.detail === 'string') errMsg = err.detail;
+          else if (Array.isArray(err.detail)) errMsg = err.detail.map(e => e.msg).join(', ');
+        }
+        throw new Error(errMsg);
+      }
+
+      alert("Offer sent successfully! The seller will be notified.");
+      closeListing();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   const openListing = (listing) => {
     setSelectedListing(listing);
   };
@@ -774,11 +817,7 @@ function WasteMarketplacePage() {
               <button
                 type="button"
                 className="dark-button"
-                onClick={() =>
-                  alert(
-                    `Interest recorded for ${selectedListing.id}`
-                  )
-                }
+                onClick={handleMakeOffer}
               >
                 I'm Interested →
               </button>
