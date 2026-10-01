@@ -1254,54 +1254,45 @@
     animation: none;
   }
 }
+
 /* =========================================================
-   FIXED ONE-PAGE LAYOUT OVERRIDES
+   SAFE FIXES FOR HACKATHON
    ========================================================= */
 
-.ai-chatbot-page {
-  height: calc(100vh - 120px) !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
+/* Hide the marketing header that was overlapping the nav */
+.page-header {
+  display: none !important;
 }
-
-.page-header,
-.ai-chatbot-header,
 .ai-principles {
   display: none !important;
 }
 
+/* Ensure the page wrapper doesn't collapse */
+.ai-chatbot-page {
+  min-height: 700px !important;
+  margin-top: 20px !important;
+}
+
+/* Ensure the chat layout has a solid minimum height */
 .ai-chat-layout {
-  display: flex !important;
-  flex: 1 1 0 !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.7fr) minmax(290px, 0.8fr) !important;
+  gap: 24px !important;
+  min-height: 650px !important;
 }
 
-.ai-chat-sidebar {
-  display: flex !important;
-  flex-direction: column !important;
-  width: 320px !important;
-  min-width: 320px !important;
-  height: 100% !important;
-  overflow-y: auto !important;
-}
-
+/* Ensure the chat panel itself takes up space */
 .ai-chat-panel {
-  flex: 1 1 0 !important;
-  min-height: 0 !important;
-  max-height: none !important;
+  min-height: 650px !important;
   display: flex !important;
   flex-direction: column !important;
-  margin-right: 24px;
 }
 
+/* Ensure the message area expands correctly */
 .ai-message-area {
-  flex: 1 1 0 !important;
-  min-height: 0 !important;
-  max-height: none !important;
+  flex: 1 1 auto !important;
+  min-height: 400px !important;
+  max-height: 600px !important;
   overflow-y: auto !important;
 }
 
@@ -1311,17 +1302,6 @@
 
 @media (max-width: 1100px) {
   .ai-chat-layout {
-    flex-direction: column !important;
-    overflow-y: auto !important;
-  }
-  .ai-chat-panel {
-    margin-right: 0;
-    min-height: 500px !important;
-    flex: none !important;
-  }
-  .ai-chat-sidebar {
-    width: 100% !important;
-    flex: none !important;
-    overflow: visible !important;
+    grid-template-columns: 1fr !important;
   }
 }
