@@ -51,6 +51,7 @@ function LoginPage() {
 
       // Fetch user profile with the token
       const userRes = await fetch("https://spectrum-hackathon.onrender.com/api/v1/auth/test-token", {
+        method: "POST",
         headers: { "Authorization": `Bearer ${data.access_token}` },
       });
 
