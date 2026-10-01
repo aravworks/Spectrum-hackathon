@@ -32,7 +32,15 @@ function WasteMarketplacePage() {
           location: { lat: 26.4499, lng: 80.3319 }
         })
       });
-      if (!res.ok) throw new Error("Failed to create listing");
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        let errMsg = "Failed to create listing";
+        if (err.detail) {
+          if (typeof err.detail === 'string') errMsg = err.detail;
+          else if (Array.isArray(err.detail)) errMsg = err.detail.map(e => e.msg).join(', ');
+        }
+        throw new Error(errMsg);
+      }
       
       const created = await res.json();
       setListings([created, ...listings]);
