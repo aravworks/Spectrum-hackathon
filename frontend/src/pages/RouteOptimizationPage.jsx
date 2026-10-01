@@ -49,11 +49,15 @@ function FitBounds({ positions }) {
 
 export default function RouteOptimizationPage() {
   const [selectedIds, setSelectedIds] = useState(["PR-2026-1042", "PR-2026-1043", "PR-2026-1044", "PR-2026-1045"]);
+  const [customPickups, setCustomPickups] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searching, setSearching] = useState(false);
   const [optimizing, setOptimizing] = useState(false);
   const [route, setRoute] = useState(null);   // RouteOptimizeResponse
   const [error, setError] = useState("");
 
-  const selectedPickups = ALL_PICKUPS.filter(p => selectedIds.includes(p.id));
+  const allAvailablePickups = [...ALL_PICKUPS, ...customPickups];
+  const selectedPickups = allAvailablePickups.filter(p => selectedIds.includes(p.id));
   const totalWeight = selectedPickups.reduce((s, p) => s + p.weight_kg, 0);
 
   function togglePickup(id) {
@@ -63,8 +67,52 @@ export default function RouteOptimizationPage() {
     setRoute(null);
   }
 
-  async function runOptimization() {
-    if (selectedPickups.length === 0) return;
+  async function handleSearchAndAdd(e) {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    setSearching(true);
+    setError("");
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`);
+      const data = await res.json();
+      if (data && data.length > 0) {
+        const result = data[0];
+        const newPickup = {
+          id: "CUSTOM-" + Date.now(),
+          lat: parseFloat(result.lat),
+          lng: parseFloat(result.lon),
+          label: "Custom ? " + result.display_name.split(",")[0],
+          weight_kg: 50, // default dummy weight
+          priority: "HIGH"
+        };
+        
+        // Use functional state updates to ensure we have the latest arrays
+        setCustomPickups(prev => {
+          const updatedCustom = [...prev, newPickup];
+          
+          setSelectedIds(prevIds => {
+            const updatedIds = [...prevIds, newPickup.id];
+            // Immediately run optimization with the new list
+            runOptimizationWithSpecificList([...ALL_PICKUPS, ...updatedCustom].filter(p => updatedIds.includes(p.id)));
+            return updatedIds;
+          });
+          
+          return updatedCustom;
+        });
+        
+        setSearchQuery("");
+      } else {
+        setError("Location not found. Try a different query.");
+      }
+    } catch (err) {
+      setError("Search failed.");
+    } finally {
+      setSearching(false);
+    }
+  }
+
+  async function runOptimizationWithSpecificList(pickupsList) {
+    if (pickupsList.length === 0) return;
     setOptimizing(true);
     setError("");
     setRoute(null);
@@ -76,7 +124,7 @@ export default function RouteOptimizationPage() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           depot: DEPOT,
-          pickups: selectedPickups,
+          pickups: pickupsList,
           destination: DEST,
         }),
       });
@@ -93,12 +141,16 @@ export default function RouteOptimizationPage() {
     }
   }
 
-  // Build polyline path: depot → ordered stops (already includes dest at end)
+  async function runOptimization() {
+    return runOptimizationWithSpecificList(selectedPickups);
+  }
+
+  // Build polyline path: depot +' ordered stops (already includes dest at end)
   const polylinePositions = route
     ? route.stops.map(s => [s.lat, s.lng])
     : [[DEPOT.lat, DEPOT.lng], ...selectedPickups.map(p => [p.lat, p.lng]), [DEST.lat, DEST.lng]];
 
-  const allPositions = [[DEPOT.lat, DEPOT.lng], ...ALL_PICKUPS.map(p => [p.lat, p.lng]), [DEST.lat, DEST.lng]];
+  const allPositions = [[DEPOT.lat, DEPOT.lng], ...allAvailablePickups.map(p => [p.lat, p.lng]), [DEST.lat, DEST.lng]];
 
   return (
     <div className="page route-optimization-page">
@@ -142,7 +194,7 @@ export default function RouteOptimizationPage() {
           <div className="eyebrow" style={{ marginBottom: 12 }}>SELECT PICKUPS</div>
           <h2 style={{ fontSize: 18, marginBottom: 16 }}>Pending Requests</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {ALL_PICKUPS.map(p => {
+            {allAvailablePickups.map(p => {
               const sel = selectedIds.includes(p.id);
               const routeStop = route?.stops.find(s => s.id === p.id);
               return (
@@ -192,8 +244,8 @@ export default function RouteOptimizationPage() {
             <Polyline
               positions={polylinePositions}
               pathOptions={{
-                color: route ? "#1a3a28" : "#aaa",
-                weight: route ? 4 : 2,
+                color: route ? "#1a3a28" : "#555",
+                weight: route ? 4 : 3,
                 dashArray: route ? null : "8 6",
                 opacity: 0.85,
               }}
@@ -210,7 +262,7 @@ export default function RouteOptimizationPage() {
             </Marker>
 
             {/* PICKUP MARKERS */}
-            {ALL_PICKUPS.map(p => {
+            {allAvailablePickups.map(p => {
               const sel = selectedIds.includes(p.id);
               const stopNum = route?.stops.find(s => s.id === p.id)?.order;
               const label = route && stopNum !== undefined ? String(stopNum) : sel ? "P" : "·";
