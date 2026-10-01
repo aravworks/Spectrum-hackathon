@@ -27,6 +27,19 @@ function ReportWasteIssuePage() {
 
     try {
       const token = localStorage.getItem("ecoverseToken");
+      const categoryMap = {
+        "Textile": "MIXED",
+        "Plastic": "PLASTIC",
+        "E-waste": "E_WASTE",
+        "Food": "ORGANIC",
+        "Batteries": "HAZARDOUS",
+        "Cosmetics": "HAZARDOUS",
+        "Household": "MIXED",
+        "Other": "MIXED"
+      };
+      const backendCategory = categoryMap[form.category] || "MIXED";
+      const weight = parseFloat(form.estimatedQuantity || 0);
+
       const res = await fetch("https://spectrum-hackathon.onrender.com/api/v1/reports", {
         method: "POST",
         headers: {
@@ -34,17 +47,26 @@ function ReportWasteIssuePage() {
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-          location: { address: form.location, coordinates: [0, 0] },
-          category: form.category.toUpperCase(),
-          description: form.description,
-          image_url: null,
-          estimated_weight_kg: parseFloat(form.estimatedQuantity || 0)
+          location: { lat: 26.4499, lng: 80.3319 },
+          category: backendCategory,
+          description: `Address: ${form.location}
+${form.description}`,
+          estimated_weight_kg: weight > 0 ? weight : 1.0,
+          severity: form.severity || "LOW"
         })
       });
 
-      if (!res.ok) throw new Error("Failed to submit waste report");
-      const data = await res.json();
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        let errMsg = "Failed to submit waste report.";
+        if (err.detail) {
+          if (typeof err.detail === 'string') errMsg = err.detail;
+          else if (Array.isArray(err.detail)) errMsg = err.detail.map(e => e.msg).join(', ');
+        }
+        throw new Error(errMsg);
+      }
       
+      const data = await res.json();
       console.log("Waste issue report:", data);
       setSubmitted(true);
     } catch (err) {

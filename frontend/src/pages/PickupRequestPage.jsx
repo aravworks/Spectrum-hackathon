@@ -63,13 +63,17 @@ function PickupRequestPage() {
         throw new Error("Please enter a valid quantity.");
       }
 
-      // Build ISO time strings from the date picker
-      const startTime = form.preferredDate
-        ? `${form.preferredDate}T09:00:00Z`
-        : new Date().toISOString();
-      const endTime = form.preferredDate
-        ? `${form.preferredDate}T17:00:00Z`
-        : new Date().toISOString();
+      const categoryMap = {
+        "Textile": "MIXED",
+        "Plastic": "PLASTIC",
+        "E-waste": "E_WASTE",
+        "Food": "ORGANIC",
+        "Batteries": "HAZARDOUS",
+        "Cosmetics": "HAZARDOUS",
+        "Household": "MIXED",
+        "Other": "MIXED"
+      };
+      const backendCategory = categoryMap[form.wasteType] || "MIXED";
 
       const res = await fetch(`${BACKEND}/pickups`, {
         method: "POST",
@@ -78,20 +82,24 @@ function PickupRequestPage() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          location: {
-            address: form.location,
-            coordinates: [0, 0],
-          },
+          location: { lat: 26.4499, lng: 80.3319 },
           estimated_weight_kg: weightKg,
-          category: form.wasteType.toUpperCase(),
-          preferred_window: { start_time: startTime, end_time: endTime },
-          notes: form.description || null,
+          category: backendCategory,
+          preferred_window: { start_time: "09:00:00", end_time: "17:00:00" },
+          notes: `Address: ${form.location}
+Date: ${form.preferredDate}
+${form.description || ""}`
         }),
       });
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.detail || "Failed to submit pickup request.");
+        let errMsg = "Failed to submit pickup request.";
+        if (err.detail) {
+          if (typeof err.detail === 'string') errMsg = err.detail;
+          else if (Array.isArray(err.detail)) errMsg = err.detail.map(e => e.msg).join(', ');
+        }
+        throw new Error(errMsg);
       }
 
       const data = await res.json();
