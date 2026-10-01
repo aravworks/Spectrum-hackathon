@@ -95,6 +95,9 @@ function WasteMarketplacePage() {
         
         setListings(formattedListings);
         setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
       }
     }
     fetchListings();
